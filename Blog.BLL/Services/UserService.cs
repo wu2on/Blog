@@ -9,13 +9,13 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 
-namespace Blog.BLL.Services
+namespace Blog.BLL.Service
 {
-    public class OrderService : IUserService
+    public class UserService : IUserService
     {
         IUnitOfWork Database { get; set; }
 
-        public OrderService(IUnitOfWork uow)
+        public UserService(IUnitOfWork uow)
         {
             Database = uow;
         }

@@ -1,3 +1,8 @@
+using Blog.BLL.Infrastructure;
+using Blog.WEB.Util;
+using Ninject;
+using Ninject.Modules;
+using Ninject.Web.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +13,7 @@ using System.Web.Routing;
 
 namespace Blog.WEB
 {
-    public class MvcApplication : System.Web.HttpApplication
+    public class MvcApplication : HttpApplication
     {
         protected void Application_Start()
         {
@@ -16,6 +21,11 @@ namespace Blog.WEB
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
+            NinjectModule userModule = new UserModule();
+            NinjectModule serviceModule = new ServiceModule("DefaultConnection");
+            var kernel = new StandardKernel(userModule, serviceModule);
+            kernel.Unbind<ModelValidatorProvider>();
+            DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
         }
     }
 }
