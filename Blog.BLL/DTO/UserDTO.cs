@@ -1,4 +1,6 @@
-﻿namespace Blog.BLL.DTO
+﻿using System;
+
+namespace Blog.BLL.DTO
 {
     public class UserDTO
     {
@@ -7,6 +9,8 @@
         public string Password { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
+        
+        public DateTime CreateAt { get; set; }
         public string Role { get; set; }
     }
 }

@@ -3,21 +3,18 @@ using Blog.BLL.Infrastructure;
 using Blog.BLL.Interfaces;
 using Blog.WEB.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace Blog.WEB.Controllers
 {
     public class AccountController : Controller
     {
-        private IUserService userService;
+        private IUserService UserService;
 
         public AccountController(IUserService service)
         {
-            userService = service;
+            UserService = service;
         }
 
         public ActionResult Register()
@@ -29,7 +26,6 @@ namespace Blog.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterModel model)
         {
-
             if (ModelState.IsValid)
             {
                 UserDTO userDto = new UserDTO
@@ -38,9 +34,10 @@ namespace Blog.WEB.Controllers
                     Password = model.Password,
                     FirstName = model.FirstName,
                     LastName = model.LastName,
+                    CreateAt = DateTime.Now,
                     Role = "user"
                 };
-                OperationDetails operationDetails = await userService.Create(userDto);
+                OperationDetails operationDetails = await UserService.Create(userDto);
                 if (operationDetails.Succedeed)
                     return View("SuccessRegister");
                 else

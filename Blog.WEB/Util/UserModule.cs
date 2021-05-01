@@ -1,6 +1,6 @@
-﻿using Ninject.Modules;
+﻿using Blog.BLL.Interfaces;
 using Blog.BLL.Service;
-using Blog.BLL.Interfaces;
+using Ninject.Modules;
 
 namespace Blog.WEB.Util
 {

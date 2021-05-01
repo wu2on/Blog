@@ -10,7 +10,7 @@ namespace Blog.DAL.Repositories
 {
     public class IdentityUnitOfWork : IUnitOfWork
     {
-        private ApplicationContext db;
+        private BlogContext db;
 
         private ApplicationUserManager userManager;
         private ApplicationRoleManager roleManager;
@@ -18,7 +18,7 @@ namespace Blog.DAL.Repositories
 
         public IdentityUnitOfWork(string connectionString)
         {
-            db = new ApplicationContext(connectionString);
+            db = new BlogContext(connectionString);
             userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
             roleManager = new ApplicationRoleManager(new RoleStore<ApplicationRole>(db));
             clientManager = new ClientManager(db);

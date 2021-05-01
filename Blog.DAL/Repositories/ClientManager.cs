@@ -7,8 +7,8 @@ namespace Blog.DAL.Repositories
 {
     public class ClientManager : IClientManager
     {
-        public ApplicationContext Database { get; set; }
-        public ClientManager(ApplicationContext db)
+        public BlogContext Database { get; set; }
+        public ClientManager(BlogContext db)
         {
             Database = db;
         }

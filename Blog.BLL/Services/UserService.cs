@@ -31,7 +31,7 @@ namespace Blog.BLL.Service
 
                 await Database.UserManager.AddToRoleAsync(user.Id, userDto.Role);
 
-                ClientProfile clientProfile = new ClientProfile { Id = user.Id, FirstName = userDto.FirstName, LastName = userDto.LastName, Email = userDto.Email };
+                ClientProfile clientProfile = new ClientProfile { Id = user.Id, FirstName = userDto.FirstName, CreatedAt = userDto.CreateAt, LastName = userDto.LastName, Email = userDto.Email };
                 Database.ClientManager.Create(clientProfile);
                 await Database.SaveAsync();
                 return new OperationDetails(true, "Регистрация успешно пройдена", "");

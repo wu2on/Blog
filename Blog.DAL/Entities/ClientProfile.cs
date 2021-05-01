@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Blog.DAL.Entities
@@ -8,10 +9,11 @@ namespace Blog.DAL.Entities
         [Key]
         [ForeignKey("ApplicationUser")]
         public string Id { get; set; }
-
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
+        public DateTime CreatedAt { get; set; }
+
         public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }
