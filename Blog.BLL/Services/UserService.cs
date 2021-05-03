@@ -13,27 +13,28 @@ namespace Blog.BLL.Service
 {
     public class UserService : IUserService
     {
-        IUnitOfWork Database { get; set; }
+        IUnitOfWork _uow { get; set; }
 
         public UserService(IUnitOfWork uow)
         {
-            Database = uow;
+            _uow = uow;
         }
         public async Task<OperationDetails> Create(UserDto userDto)
         {
-            User user = await Database.UserManager.FindByEmailAsync(userDto.Email);
+            User user = await _uow.UserManager.FindByEmailAsync(userDto.Email);
             if (user == null)
             {
                 user = new User { Email = userDto.Email, UserName = userDto.Email };
-                var result = await Database.UserManager.CreateAsync(user, userDto.Password);
+                var result = await _uow.UserManager.CreateAsync(user, userDto.Password);
                 if (result.Errors.Count() > 0)
                     return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
 
-                await Database.UserManager.AddToRoleAsync(user.Id, userDto.Role);
+                await _uow.UserManager.AddToRoleAsync(user.Id, userDto.Role);
 
                 ClientProfile clientProfile = new ClientProfile { Id = user.Id, FirstName = userDto.FirstName, CreatedAt = userDto.CreateAt, LastName = userDto.LastName, Email = userDto.Email };
-                Database.ClientManager.Create(clientProfile);
-                await Database.SaveAsync();
+                _uow.ClientManager.Create(clientProfile);
+                bool response = await _uow.SaveAsync();
+                
                 return new OperationDetails(true, "Регистрация успешно пройдена", "");
             }
             else
@@ -46,9 +47,9 @@ namespace Blog.BLL.Service
         {
             ClaimsIdentity claim = null;
 
-            User user = await Database.UserManager.FindAsync(userDto.Email, userDto.Password);
+            User user = await _uow.UserManager.FindAsync(userDto.Email, userDto.Password);
             if (user != null)
-                claim = await Database.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
+                claim = await _uow.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             return claim;
         }
 
@@ -56,11 +57,11 @@ namespace Blog.BLL.Service
         {
             foreach (string roleName in roles)
             {
-                var role = await Database.RoleManager.FindByNameAsync(roleName);
+                var role = await _uow.RoleManager.FindByNameAsync(roleName);
                 if (role == null)
                 {
                     role = new Role { Name = roleName };
-                    await Database.RoleManager.CreateAsync(role);
+                    await _uow.RoleManager.CreateAsync(role);
                 }
             }
             await Create(adminDto);
@@ -68,7 +69,7 @@ namespace Blog.BLL.Service
 
         public void Dispose()
         {
-            Database.Dispose();
+            _uow.Dispose();
         }
     }
 }

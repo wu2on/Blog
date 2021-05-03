@@ -27,7 +27,6 @@ namespace Blog.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterModel model)
         {
-            await SetInitialDataAsync();
             if (ModelState.IsValid)
             {
                 UserDto userDto = new UserDto
@@ -46,19 +45,6 @@ namespace Blog.WEB.Controllers
                     ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
             }
             return View(model);
-        }
-        
-        private async Task SetInitialDataAsync()
-        {
-            await UserService.SetInitialData(new UserDto
-            {
-                Email = "romanodnosum@gmail.com",
-                Password = "123456",
-                FirstName = "Roman",
-                LastName = "Odnosum",
-                CreateAt = DateTime.Now,
-                Role="admin",
-            }, new List<string> { "user", "admin" });
         }
     }
 }
