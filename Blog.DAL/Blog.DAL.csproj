@@ -58,11 +58,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EF\BlogContext.cs" />
-    <Compile Include="Entities\ApplicationRole.cs" />
-    <Compile Include="Entities\ApplicationUser.cs" />
+    <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\ClientProfile.cs" />
-    <Compile Include="Identity\ApplicationRoleManager.cs" />
-    <Compile Include="Identity\ApplicationUserManager.cs" />
+    <Compile Include="Identity\BlogRoleManager.cs" />
+    <Compile Include="Identity\BlogUserManager.cs" />
     <Compile Include="Interfaces\IClientManager.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Migrations\202105012114147_MigrateDB.cs" />

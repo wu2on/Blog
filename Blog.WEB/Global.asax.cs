@@ -19,7 +19,7 @@ namespace Blog.WEB
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             NinjectModule userModule = new UserModule();
-            NinjectModule serviceModule = new ServiceModule("DefaultConnection");
+            NinjectModule serviceModule = new ServiceModule("Blog");
             var kernel = new StandardKernel(userModule, serviceModule);
             kernel.Unbind<ModelValidatorProvider>();
             DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));

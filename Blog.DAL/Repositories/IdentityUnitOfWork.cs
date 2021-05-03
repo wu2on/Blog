@@ -12,19 +12,19 @@ namespace Blog.DAL.Repositories
     {
         private BlogContext db;
 
-        private ApplicationUserManager userManager;
-        private ApplicationRoleManager roleManager;
+        private BlogUserManager userManager;
+        private BlogRoleManager roleManager;
         private IClientManager clientManager;
 
         public IdentityUnitOfWork(string connectionString)
         {
             db = new BlogContext(connectionString);
-            userManager = new ApplicationUserManager(new UserStore<ApplicationUser>(db));
-            roleManager = new ApplicationRoleManager(new RoleStore<ApplicationRole>(db));
+            userManager = new BlogUserManager(new UserStore<User>(db));
+            roleManager = new BlogRoleManager(new RoleStore<Role>(db));
             clientManager = new ClientManager(db);
         }
 
-        public ApplicationUserManager UserManager
+        public BlogUserManager UserManager
         {
             get { return userManager; }
         }
@@ -34,7 +34,7 @@ namespace Blog.DAL.Repositories
             get { return clientManager; }
         }
 
-        public ApplicationRoleManager RoleManager
+        public BlogRoleManager RoleManager
         {
             get { return roleManager; }
         }

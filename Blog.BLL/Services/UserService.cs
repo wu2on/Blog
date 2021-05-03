@@ -1,4 +1,4 @@
-﻿using Blog.BLL.DTO;
+﻿using Blog.BLL.Dto;
 using Blog.DAL.Entities;
 using Blog.DAL.Interfaces;
 using Blog.BLL.Infrastructure;
@@ -19,12 +19,12 @@ namespace Blog.BLL.Service
         {
             Database = uow;
         }
-        public async Task<OperationDetails> Create(UserDTO userDto)
+        public async Task<OperationDetails> Create(UserDto userDto)
         {
-            ApplicationUser user = await Database.UserManager.FindByEmailAsync(userDto.Email);
+            User user = await Database.UserManager.FindByEmailAsync(userDto.Email);
             if (user == null)
             {
-                user = new ApplicationUser { Email = userDto.Email, UserName = userDto.Email };
+                user = new User { Email = userDto.Email, UserName = userDto.Email };
                 var result = await Database.UserManager.CreateAsync(user, userDto.Password);
                 if (result.Errors.Count() > 0)
                     return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
@@ -42,24 +42,24 @@ namespace Blog.BLL.Service
             }
         }
 
-        public async Task<ClaimsIdentity> Authenticate(UserDTO userDto)
+        public async Task<ClaimsIdentity> Authenticate(UserDto userDto)
         {
             ClaimsIdentity claim = null;
 
-            ApplicationUser user = await Database.UserManager.FindAsync(userDto.Email, userDto.Password);
+            User user = await Database.UserManager.FindAsync(userDto.Email, userDto.Password);
             if (user != null)
                 claim = await Database.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             return claim;
         }
 
-        public async Task SetInitialData(UserDTO adminDto, List<string> roles)
+        public async Task SetInitialData(UserDto adminDto, List<string> roles)
         {
             foreach (string roleName in roles)
             {
                 var role = await Database.RoleManager.FindByNameAsync(roleName);
                 if (role == null)
                 {
-                    role = new ApplicationRole { Name = roleName };
+                    role = new Role { Name = roleName };
                     await Database.RoleManager.CreateAsync(role);
                 }
             }

@@ -6,9 +6,9 @@ namespace Blog.DAL.Interfaces
 {
     public interface IUnitOfWork : IDisposable
     {
-        ApplicationUserManager UserManager { get; }
+        BlogUserManager UserManager { get; }
         IClientManager ClientManager { get; }
-        ApplicationRoleManager RoleManager { get; }
+        BlogRoleManager RoleManager { get; }
         Task SaveAsync();
     }
 }

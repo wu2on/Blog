@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Blog.BLL.DTO
+namespace Blog.BLL.Dto
 {
-    public class UserDTO
+    public class UserDto
     {
         public string Id { get; set; }
         public string Email { get; set; }

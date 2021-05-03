@@ -5,7 +5,7 @@ using System.Data.Entity.Infrastructure;
 
 namespace Blog.DAL.EF
 {
-    public class BlogContext : IdentityDbContext<ApplicationUser>
+    public class BlogContext : IdentityDbContext<User>
     {
         public BlogContext(string conectionString) : base(conectionString) { }
 
