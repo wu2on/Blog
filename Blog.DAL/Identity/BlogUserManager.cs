@@ -3,9 +3,9 @@ using Microsoft.AspNet.Identity;
 
 namespace Blog.DAL.Identity
 {
-    public class ApplicationUserManager : UserManager<ApplicationUser>
+    public class BlogUserManager : UserManager<User>
     {
-        public ApplicationUserManager(IUserStore<ApplicationUser> store)
+        public BlogUserManager(IUserStore<User> store)
                 : base(store)
         {
         }

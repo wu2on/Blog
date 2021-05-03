@@ -2,7 +2,7 @@
 
 namespace Blog.DAL.Entities
 {
-    public class ApplicationUser : IdentityUser
+    public class User : IdentityUser
     {
         public virtual ClientProfile ClientProfile { get; set; }
     }

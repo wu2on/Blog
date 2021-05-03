@@ -4,9 +4,9 @@ using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Blog.DAL.Identity
 {
-    public class ApplicationRoleManager : RoleManager<ApplicationRole>
+    public class BlogRoleManager : RoleManager<Role>
     {
-        public ApplicationRoleManager(RoleStore<ApplicationRole> store)
+        public BlogRoleManager(RoleStore<Role> store)
                     : base(store)
         { 
         }
