@@ -63,7 +63,7 @@
     <Compile Include="Entities\ClientProfile.cs" />
     <Compile Include="Identity\BlogRoleManager.cs" />
     <Compile Include="Identity\BlogUserManager.cs" />
-    <Compile Include="Interfaces\IClientManager.cs" />
+    <Compile Include="Interfaces\Repositories\IClientProfileRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Interfaces\Repositories\IRepository.cs" />
     <Compile Include="Migrations\202105012114147_MigrateDB.cs" />
@@ -72,7 +72,8 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\ClientManager.cs" />
+    <Compile Include="Repositories\ClientProfilesRepository.cs" />
+    <Compile Include="Repositories\Repository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>

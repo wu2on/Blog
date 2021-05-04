@@ -16,7 +16,7 @@ namespace Blog.DAL.EF
     {
         public BlogContext Create()
         {
-            return new BlogContext("DefaultConnection");
+            return new BlogContext("Blog");
         }
     }
 }

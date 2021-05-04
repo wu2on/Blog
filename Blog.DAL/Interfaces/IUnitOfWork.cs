@@ -1,4 +1,5 @@
 ﻿using Blog.DAL.Identity;
+using Blog.DAL.Interfaces.Repositories;
 using System;
 using System.Threading.Tasks;
 
@@ -8,8 +9,8 @@ namespace Blog.DAL.Interfaces
     {
         BlogUserManager UserManager { get; }
         BlogRoleManager RoleManager { get; }
-        IClientManager ClientManager { get; }
+        IClientProfileRepository ClientManager { get; }
 
-        Task<bool> SaveAsync();
+        Task SaveAsync();
     }
 }
