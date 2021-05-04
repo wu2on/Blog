@@ -11,6 +11,6 @@ namespace Blog.DAL.Interfaces
         BlogRoleManager RoleManager { get; }
         IClientProfileRepository ClientManager { get; }
 
-        Task SaveAsync();
+        Task<bool> SaveAsync();
     }
 }

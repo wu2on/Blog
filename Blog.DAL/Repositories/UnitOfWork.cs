@@ -29,9 +29,18 @@ namespace Blog.DAL.Repositories
 
         public IClientProfileRepository ClientManager => _clientProfileRepository ?? (_clientProfileRepository = new ClientProfilesRepository(_context));
 
-        public async Task SaveAsync()
+        public async Task<bool> SaveAsync()
         {
-            await _context.SaveChangesAsync();            
+            try
+            {
+                return await _context.SaveChangesAsync() > 0;
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return false;
+            }
+                      
         }
 
        

@@ -33,13 +33,13 @@ namespace Blog.BLL.Service
 
                 ClientProfile clientProfile = new ClientProfile { Id = user.Id, FirstName = userDto.FirstName, CreatedAt = userDto.CreateAt, LastName = userDto.LastName, Email = userDto.Email };
                 _uow.ClientManager.Create(clientProfile);
-                await _uow.SaveAsync();
+                bool reqst = await _uow.SaveAsync();
                 
-                return new OperationDetails(true, "Регистрация успешно пройдена", "");
+                return new OperationDetails(true, "Registration completed successfully", "");
             }
             else
             {
-                return new OperationDetails(false, "Пользователь с таким логином уже существует", "Email");
+                return new OperationDetails(false, "User with this login already exists", "Email");
             }
         }
 
