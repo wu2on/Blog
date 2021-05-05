@@ -9,23 +9,23 @@ using System.Web.Mvc;
 
 namespace Blog.WEB.Controllers
 {
-    public class AccountController : Controller
+    public class SignUpController : Controller
     {
         private IUserService UserService;
 
-        public AccountController(IUserService service)
+        public SignUpController(IUserService service)
         {
             UserService = service;
         }
 
-        public ActionResult Register()
+        public ActionResult New()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Register(RegisterModel model)
+        public async Task<ActionResult> New(RegisterModel model)
         {
             if (ModelState.IsValid)
             {

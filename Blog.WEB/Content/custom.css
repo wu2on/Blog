@@ -1,0 +1,11 @@
+﻿.custom-color {
+    background-color: #261d45;
+}
+
+.custom-nav {
+    margin-top: 12px;
+    margin-left: 15px;
+    color: #177578 !important;
+    font-weight: bold;
+    font-size: 2rem;
+}
