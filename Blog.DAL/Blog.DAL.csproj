@@ -58,11 +58,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EF\BlogContext.cs" />
+    <Compile Include="Entities\Comment.cs" />
+    <Compile Include="Entities\Post.cs" />
     <Compile Include="Entities\Role.cs" />
+    <Compile Include="Entities\Tag.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\ClientProfile.cs" />
     <Compile Include="Identity\BlogRoleManager.cs" />
     <Compile Include="Identity\BlogUserManager.cs" />
+    <Compile Include="Interfaces\Entities\ISoftDeletable.cs" />
     <Compile Include="Interfaces\Repositories\IClientProfileRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Interfaces\Repositories\IRepository.cs" />
