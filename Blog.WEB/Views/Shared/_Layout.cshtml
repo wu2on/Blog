@@ -28,12 +28,9 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "custom-nav" })</li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right">
                     <li>@Html.ActionLink(" ", "Index", "Search", new { area = "" }, new { @class = "glyphicon glyphicon-search custom-nav" })</li>
-                    <li>@Html.ActionLink("Sign In", "Index", "SignIn", new { area = "" }, new { @class = "custom-nav" })</li>
-                    <li>@Html.ActionLink("Sign Up", "New", "SignUp", new { area = "" }, new { @class = "custom-nav" })</li>
                 </ul>
+                @Html.Partial("_LoginPartial")
             </div>
         </div>
     </div>

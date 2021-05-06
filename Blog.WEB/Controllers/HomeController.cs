@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Web;
+using System.Web.Mvc;
 
 namespace Blog.WEB.Controllers
 {
@@ -6,13 +7,14 @@ namespace Blog.WEB.Controllers
     {
         public ActionResult Index()
         {
+            
             return View();
         }
 
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
-
+            var result = HttpContext.GetOwinContext().Authentication.User;
             return View();
         }
 
