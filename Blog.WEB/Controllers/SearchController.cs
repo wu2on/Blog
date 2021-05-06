@@ -8,7 +8,6 @@ namespace Blog.WEB.Controllers
         // GET: Search
         public ActionResult Index()
         {
-            ViewBag.Message = User.Identity;
             return View();
         }
     }

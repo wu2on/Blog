@@ -80,6 +80,7 @@ namespace Blog.WEB.Controllers
             return View(model);
         }
 
+        [HttpPost]
         public ActionResult Logout()
         {
             HttpContext.GetOwinContext().Authentication.SignOut();

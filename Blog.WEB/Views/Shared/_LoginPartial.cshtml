@@ -1,12 +1,26 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (Request.IsAuthenticated)
 {
+<ul class="nav navbar-nav">
+    <li>@Html.ActionLink("General", "Index", "Home", new { area = "" }, new { @class = "custom-nav" })</li>
+    <li>@Html.ActionLink("My blogs", "Index", "Blog", new { area = "" }, new { @class = "custom-nav" })</li>
+    <li>@Html.ActionLink(" ", "Index", "Search", new { area = "" }, new { @class = "glyphicon glyphicon-search custom-nav" })</li>
+</ul>
+  
 <ul class="nav navbar-nav navbar-right">
     <li>
-        @Html.ActionLink("Здравствуйте " + User.Identity.GetUserName() + "!", "Index", "Manage", new { area = "" }, new { @class = "custom-nav" })
+        <li>@Html.ActionLink(" ", "Create", "Blog", new { area = "" }, new { @class = "glyphicon glyphicon-plus custom-nav" })</li>
     </li>
     <li>
-        @Html.ActionLink("Logout", "Logout", "Account", new { area = "" }, new { @class = "custom-nav" })
+        @Html.ActionLink("Profile: " + User.Identity.GetUserName().Split(new char[] { '@' }).FirstOrDefault(), "Index", "Manage", new { area = "" }, new { @class = "custom-nav" })
+    </li>
+    <li>
+        @using (Html.BeginForm("Logout", "Account", FormMethod.Post, new { role = "form" }))
+        {
+            @Html.AntiForgeryToken()
+
+            <input type="submit" value="Logout" class="custom-nav btn" />
+        }
     </li>
 </ul>
 }
