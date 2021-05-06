@@ -16,22 +16,12 @@ namespace Blog.DAL.Entities
         [Required]
         public DateTime Date { get; set; }
 
-        public ICollection<ClientProfile> ClientProfile { get; set; }
-
-        public ICollection<Post> Post { get; set; }
-
         [Required]
         public bool IsDeleted { get; set; }
 
         public void OnDelete()
         {
             IsDeleted = true;
-        }
-
-        public Comment()
-        {
-            ClientProfile = new List<ClientProfile>();
-            Post = new List<Post>();
         }
     }
 }

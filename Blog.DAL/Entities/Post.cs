@@ -17,8 +17,6 @@ namespace Blog.DAL.Entities
         [Required] 
         public DateTime Date { get; set; }
 
-        public ICollection<ClientProfile> ClientProfile { get; set; }
-
         public ICollection<Tag> Tag { get; set; }
 
         [Required]
@@ -28,10 +26,8 @@ namespace Blog.DAL.Entities
         {
             IsDeleted = true;
         }
-
         public Post()
         {
-            ClientProfile = new List<ClientProfile>();
             Tag = new List<Tag>();
         }
     }

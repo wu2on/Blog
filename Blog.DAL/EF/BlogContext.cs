@@ -10,6 +10,10 @@ namespace Blog.DAL.EF
         public BlogContext(string conectionString) : base(conectionString) { }
 
         public DbSet<ClientProfile> ClientProfiles { get; set; }
+        public DbSet<Post> Posts { get; set; }
+        public DbSet<Tag> Tags { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+
     }
 
     public class MigrationsContextFactory : IDbContextFactory<BlogContext>
