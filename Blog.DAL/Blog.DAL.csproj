@@ -69,7 +69,10 @@
     <Compile Include="Interfaces\Entities\ISoftDeletable.cs" />
     <Compile Include="Interfaces\Repositories\IClientProfileRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
+    <Compile Include="Interfaces\Repositories\ICommentRepository.cs" />
+    <Compile Include="Interfaces\Repositories\IPostRepository.cs" />
     <Compile Include="Interfaces\Repositories\IRepository.cs" />
+    <Compile Include="Interfaces\Repositories\ITagRepository.cs" />
     <Compile Include="Migrations\202105012114147_MigrateDB.cs" />
     <Compile Include="Migrations\202105012114147_MigrateDB.designer.cs">
       <DependentUpon>202105012114147_MigrateDB.cs</DependentUpon>
@@ -81,7 +84,10 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\ClientProfilesRepository.cs" />
+    <Compile Include="Repositories\CommentRepository.cs" />
+    <Compile Include="Repositories\PostRepository.cs" />
     <Compile Include="Repositories\Repository.cs" />
+    <Compile Include="Repositories\TagRepository.cs" />
     <Compile Include="Repositories\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,10 @@ namespace Blog.DAL.Interfaces
     {
         BlogUserManager UserManager { get; }
         BlogRoleManager RoleManager { get; }
-        IClientProfileRepository ClientManager { get; }
+        IClientProfileRepository ClientProfileRepository { get; }
+        IPostRepository PostRepository { get; }
+        ICommentRepository CommentRepository { get; }
+        ITagRepository TagRepository { get; }
 
         Task<bool> SaveAsync();
     }

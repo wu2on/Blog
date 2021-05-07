@@ -17,6 +17,9 @@ namespace Blog.DAL.Repositories
         private BlogUserManager _userManager;
         private BlogRoleManager _roleManager;
         private IClientProfileRepository _clientProfileRepository;
+        private IPostRepository _postRepository;
+        private ICommentRepository _commentRepository;
+        private ITagRepository _tagRepository;
 
         public UnitOfWork(string connectionString)
         {
@@ -27,8 +30,11 @@ namespace Blog.DAL.Repositories
 
         public BlogRoleManager RoleManager => _roleManager ?? (_roleManager = new BlogRoleManager(new RoleStore<Role>(_context)));
 
-        public IClientProfileRepository ClientManager => _clientProfileRepository ?? (_clientProfileRepository = new ClientProfilesRepository(_context));
+        public IClientProfileRepository ClientProfileRepository => _clientProfileRepository ?? (_clientProfileRepository = new ClientProfilesRepository(_context));
 
+        public IPostRepository PostRepository => _postRepository ?? (_postRepository = new PostRepository(_context));
+        public ICommentRepository CommentRepository => _commentRepository ?? ( _commentRepository = new CommentRepository(_context));
+        public ITagRepository TagRepository => _tagRepository ?? ( _tagRepository = new TagRepository(_context));
         public async Task<bool> SaveAsync()
         {
             try

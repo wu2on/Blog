@@ -32,7 +32,7 @@ namespace Blog.BLL.Service
                 await _uow.UserManager.AddToRoleAsync(user.Id, userDto.Role);
 
                 ClientProfile clientProfile = new ClientProfile { Id = user.Id, FirstName = userDto.FirstName, CreatedAt = userDto.CreateAt, LastName = userDto.LastName, Email = userDto.Email };
-                _uow.ClientManager.Create(clientProfile);
+                _uow.ClientProfileRepository.Create(clientProfile);
                 bool reqst = await _uow.SaveAsync();
                 
                 return new OperationDetails(true, "Registration completed successfully", "");
