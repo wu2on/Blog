@@ -1,14 +1,27 @@
-﻿using System;
+﻿using Blog.WEB.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Blog.BLL.Dto;
+using Blog.BLL.Infrastructure;
+using Blog.BLL.Interfaces;
+using System.Threading.Tasks;
 
 namespace Blog.WEB.Controllers
 {
     public class BlogController : Controller
     {
-        // GET: Blog
+        private IBlogService BlogService;
+
+        public BlogController(IBlogService service)
+        {
+            BlogService = service;
+        }
+
         public ActionResult Index()
         {
             return View();
@@ -20,28 +33,41 @@ namespace Blog.WEB.Controllers
             return View();
         }
 
-        // GET: Blog/Create
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Blog/Create
+        
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [Authorize]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> Create(BlogModel model)
         {
-            try
+            if(ModelState.IsValid)
             {
-                // TODO: Add insert logic here
+                string currentUserId = HttpContext.User.Identity.GetUserId();
 
-                return RedirectToAction("Index");
+                BlogDto blogDto = new BlogDto
+                {
+                    Title = model.Title,
+                    Text = model.Text,
+                    Date = DateTime.Now,
+                    ClientProfile_Id = currentUserId,
+                    IsDeleted = false
+                };
+
+                OperationDetails operationDetails = await BlogService.Create(blogDto);
+                if (operationDetails.Succedeed)
+                    return RedirectToAction("Index", "Blog");
+                else
+                    ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
             }
-            catch
-            {
-                return View();
-            }
+            
+            return View();
         }
-
+        
         // GET: Blog/Edit/5
         public ActionResult Edit(int id)
         {

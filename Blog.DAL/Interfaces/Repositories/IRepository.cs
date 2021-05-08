@@ -10,6 +10,7 @@ namespace Blog.DAL.Interfaces.Repositories
         TEntity Get(TKey id);
         IEnumerable<TEntity> Find(Func<TEntity, Boolean> predicate);
         TEntity Create(TEntity entity);
+        void CreateMany(ICollection<TEntity> entities);
         void Update(TEntity entity);
         void Delete(TKey id);
     }

@@ -13,7 +13,14 @@ namespace Blog.DAL.Entities
         public string Text { get; set; }
 
         [Required]
-        public DateTime Date { get; set; }
+        public DateTime CreateAt { get; set; }
+        [Required]
+        public string UserProfileId { get; set; }
+        public UserProfile UserProfile { get; set; }
+
+        [Required]
+        public int PostId { get; set; }
+        public Post Post { get; set; }
 
         [Required]
         public bool IsDeleted { get; set; }

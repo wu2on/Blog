@@ -26,6 +26,11 @@ namespace Blog.DAL.Repositories
             return entity;
         }
 
+        public void CreateMany(ICollection<TEntity> entities)
+        {
+            DbSet.AddRange(entities);
+        }
+
         public void Delete(TKey id)
         {
             TEntity entity = DbSet.FirstOrDefault(e => e.Id.Equals(id));

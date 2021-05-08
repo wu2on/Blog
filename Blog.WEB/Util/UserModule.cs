@@ -1,5 +1,5 @@
 ﻿using Blog.BLL.Interfaces;
-using Blog.BLL.Service;
+using Blog.BLL.Services;
 using Ninject.Modules;
 
 namespace Blog.WEB.Util
@@ -9,6 +9,7 @@ namespace Blog.WEB.Util
         public override void Load()
         {
             Bind<IUserService>().To<UserService>();
+            Bind<IBlogService>().To<BlogService>();
         }
     }
 }

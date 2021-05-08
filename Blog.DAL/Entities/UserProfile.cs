@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Blog.DAL.Entities
 {
-    public class ClientProfile : Entity<string>, ISoftDeletable
+    public class UserProfile : Entity<string>, ISoftDeletable
     {
 
         [ForeignKey("User")]
@@ -20,7 +20,7 @@ namespace Blog.DAL.Entities
 
         public ICollection<Comment> Comments { get; set; }
 
-        public ClientProfile()
+        public UserProfile()
         {
             Posts = new List<Post>();
             Comments = new List<Comment>();

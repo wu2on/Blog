@@ -4,6 +4,6 @@ namespace Blog.DAL.Entities
 {
     public class User : IdentityUser
     {
-        public virtual ClientProfile ClientProfile { get; set; }
+        public virtual UserProfile UserProfile { get; set; }
     }
 }

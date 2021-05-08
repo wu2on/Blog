@@ -14,8 +14,10 @@ namespace Blog.DAL.Entities
         public string Text { get; set; }
 
         [Required] 
-        public DateTime Date { get; set; }
-
+        public DateTime CreateAt { get; set; }
+        [Required]
+        public string UserProfileId { get; set; }
+        public UserProfile UserProfile { get; set; }
         public ICollection<Tag> Tag { get; set; }
 
         [Required]

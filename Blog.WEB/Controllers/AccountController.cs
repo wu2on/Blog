@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using System.Security.Claims;
 using System.Web;
 using Microsoft.Owin.Security;
+using System.Collections.Generic;
 
 namespace Blog.WEB.Controllers
 {
@@ -38,7 +39,9 @@ namespace Blog.WEB.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     CreateAt = DateTime.Now,
-                    Role = "user"
+                    Role = "user",
+                    IsDeleted = false
+                    
                 };
                 OperationDetails operationDetails = await UserService.Create(userDto);
                 if (operationDetails.Succedeed)
@@ -58,6 +61,8 @@ namespace Blog.WEB.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SignIn(SignInModel model)
         {
+            //await SetInitialDataAsync();
+
             if (ModelState.IsValid)
             {
                 UserDto userDto = new UserDto { Email = model.Email, Password = model.Password };
@@ -86,5 +91,19 @@ namespace Blog.WEB.Controllers
             HttpContext.GetOwinContext().Authentication.SignOut();
             return RedirectToAction("Index", "Home");
         }
+
+        //private async Task SetInitialDataAsync()
+        //{
+        //    await UserService.SetInitialData(new UserDto
+        //    {
+        //        Email = "Romanodnosum@gmail.com",
+        //        FirstName = "Roman",
+        //        LastName = "Odnosum",
+        //        Password = "123456",
+        //        Role = "admin",
+        //        CreateAt = DateTime.Now,
+        //        IsDeleted = false
+        //    }, new List<string> { "user", "admin" });
+        //}
     }
 }

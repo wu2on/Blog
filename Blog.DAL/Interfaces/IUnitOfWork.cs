@@ -9,7 +9,7 @@ namespace Blog.DAL.Interfaces
     {
         BlogUserManager UserManager { get; }
         BlogRoleManager RoleManager { get; }
-        IClientProfileRepository ClientProfileRepository { get; }
+        IUserProfileRepository UserProfileRepository { get; }
         IPostRepository PostRepository { get; }
         ICommentRepository CommentRepository { get; }
         ITagRepository TagRepository { get; }

@@ -9,7 +9,7 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity;
 
-namespace Blog.BLL.Service
+namespace Blog.BLL.Services
 {
     public class UserService : IUserService
     {
@@ -31,8 +31,8 @@ namespace Blog.BLL.Service
 
                 await _uow.UserManager.AddToRoleAsync(user.Id, userDto.Role);
 
-                ClientProfile clientProfile = new ClientProfile { Id = user.Id, FirstName = userDto.FirstName, CreatedAt = userDto.CreateAt, LastName = userDto.LastName, Email = userDto.Email };
-                _uow.ClientProfileRepository.Create(clientProfile);
+                UserProfile userProfile = new UserProfile { Id = user.Id, FirstName = userDto.FirstName, CreatedAt = userDto.CreateAt, LastName = userDto.LastName, Email = userDto.Email, IsDeleted = userDto.IsDeleted };
+                _uow.UserProfileRepository.Create(userProfile);
                 await _uow.SaveAsync();
                 
                 return new OperationDetails(true, "Registration completed successfully", "");
