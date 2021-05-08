@@ -4,7 +4,7 @@ using Blog.DAL.Interfaces.Repositories;
 
 namespace Blog.DAL.Repositories
 {
-    public class CommentRepository : Repository<Comment>, ICommentRepository
+    public class CommentRepository : Repository<Comment, int>, ICommentRepository
     {
         public CommentRepository(BlogContext context) : base(context)
         {

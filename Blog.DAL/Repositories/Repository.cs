@@ -1,14 +1,15 @@
 ﻿using Blog.DAL.EF;
+using Blog.DAL.Interfaces.Entities;
 using Blog.DAL.Interfaces.Repositories;
 
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Threading.Tasks;
+using System.Linq;
 
 namespace Blog.DAL.Repositories
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : class, IEntity<TKey>
     {
         protected readonly BlogContext Context;
         protected readonly DbSet<TEntity> DbSet;
@@ -25,17 +26,18 @@ namespace Blog.DAL.Repositories
             return entity;
         }
 
-        public void Delete(string id)
+        public void Delete(TKey id)
         {
-            throw new NotImplementedException();
+            TEntity entity = DbSet.FirstOrDefault(e => e.Id.Equals(id));
         }
+
 
         public IEnumerable<TEntity> Find(Func<TEntity, bool> predicate)
         {
             throw new NotImplementedException();
         }
 
-        public TEntity Get(string id)
+        public TEntity Get(TKey Id)
         {
             throw new NotImplementedException();
         }

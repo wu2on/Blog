@@ -2,7 +2,7 @@
 
 namespace Blog.DAL.Interfaces.Repositories
 {
-    public interface ICommentRepository : IRepository<Comment>
+    public interface ICommentRepository : IRepository<Comment, int>
     {
 
     }

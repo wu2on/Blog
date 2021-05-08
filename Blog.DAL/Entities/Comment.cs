@@ -5,10 +5,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Blog.DAL.Entities
 {
-    public class Comment : ISoftDeletable
+    public class Comment : Entity<int>, ISoftDeletable
     {
-        [Key]
-        public int Id { get; set; }
+        public override int Id { get; set; }
 
         [Required]
         public string Text { get; set; }
@@ -18,10 +17,5 @@ namespace Blog.DAL.Entities
 
         [Required]
         public bool IsDeleted { get; set; }
-
-        public void OnDelete()
-        {
-            IsDeleted = true;
-        }
     }
 }

@@ -3,10 +3,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Blog.DAL.Entities
 {
-    public class Tag
+    public class Tag : Entity<int>
     {
-        [Key]
-        public int Id { get; set; }
+        public override int Id { get; set; }
         [Required]
         public string Body { get; set; }
 
@@ -16,7 +15,5 @@ namespace Blog.DAL.Entities
         {
            Post  = new List<Post>();
         }
-
-
     }
 }

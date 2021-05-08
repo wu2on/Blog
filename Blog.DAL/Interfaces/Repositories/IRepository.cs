@@ -1,18 +1,16 @@
-﻿using System;
+﻿using Blog.DAL.Interfaces.Entities;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Blog.DAL.Interfaces.Repositories
 {
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IRepository<TEntity, TKey> where TEntity : class, IEntity<TKey>
     {
         IEnumerable<TEntity> GetAll();
-        TEntity Get(string id);
+        TEntity Get(TKey id);
         IEnumerable<TEntity> Find(Func<TEntity, Boolean> predicate);
         TEntity Create(TEntity entity);
         void Update(TEntity entity);
-        void Delete(string id);
+        void Delete(TKey id);
     }
 }

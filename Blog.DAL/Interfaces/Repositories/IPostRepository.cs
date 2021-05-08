@@ -2,7 +2,7 @@
 
 namespace Blog.DAL.Interfaces.Repositories
 {
-    public interface IPostRepository : IRepository<Post>
+    public interface IPostRepository : IRepository<Post, int>
     {
 
     }

@@ -33,7 +33,7 @@ namespace Blog.BLL.Service
 
                 ClientProfile clientProfile = new ClientProfile { Id = user.Id, FirstName = userDto.FirstName, CreatedAt = userDto.CreateAt, LastName = userDto.LastName, Email = userDto.Email };
                 _uow.ClientProfileRepository.Create(clientProfile);
-                bool reqst = await _uow.SaveAsync();
+                await _uow.SaveAsync();
                 
                 return new OperationDetails(true, "Registration completed successfully", "");
             }

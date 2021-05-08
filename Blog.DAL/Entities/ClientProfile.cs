@@ -1,16 +1,15 @@
 ﻿using Blog.DAL.Interfaces.Entities;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Blog.DAL.Entities
 {
-    public class ClientProfile : ISoftDeletable
+    public class ClientProfile : Entity<string>, ISoftDeletable
     {
-        [Key]
+
         [ForeignKey("User")]
-        public string Id { get; set; }
+        public override string Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -26,13 +25,7 @@ namespace Blog.DAL.Entities
             Posts = new List<Post>();
             Comments = new List<Comment>();
         }
-
-
-
         public bool IsDeleted { get; set; }
-        public void OnDelete()
-        {
-            IsDeleted = true;
-        }
+
     }
 }

@@ -2,7 +2,7 @@
 
 namespace Blog.DAL.Interfaces.Repositories
 {
-    public interface IClientProfileRepository : IRepository<ClientProfile>
+    public interface IClientProfileRepository : IRepository<ClientProfile, string>
     {
         
     }
