@@ -54,7 +54,7 @@ namespace Blog.WEB.Controllers
                     Title = model.Title,
                     Text = model.Text,
                     Date = DateTime.Now,
-                    ClientProfile_Id = currentUserId,
+                    UserProfile_Id = currentUserId,
                     IsDeleted = false
                 };
 

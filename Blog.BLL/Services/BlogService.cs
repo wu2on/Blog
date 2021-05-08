@@ -19,7 +19,7 @@ namespace Blog.BLL.Services
         {
             if(blogDto != null)
             {
-                Post post = new Post { Title = blogDto.Title, Text = blogDto.Text, CreateAt = blogDto.Date, IsDeleted = blogDto.IsDeleted };
+                Post post = new Post { Title = blogDto.Title, Text = blogDto.Text, CreateAt = blogDto.Date, IsDeleted = blogDto.IsDeleted, UserProfileId = blogDto.UserProfile_Id };
 
                 _uow.PostRepository.Create(post);
                 await _uow.SaveAsync();
