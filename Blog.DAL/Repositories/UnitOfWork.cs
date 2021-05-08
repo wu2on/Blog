@@ -16,7 +16,7 @@ namespace Blog.DAL.Repositories
 
         private BlogUserManager _userManager;
         private BlogRoleManager _roleManager;
-        private IClientProfileRepository _clientProfileRepository;
+        private IUserProfileRepository _userProfileRepository;
         private IPostRepository _postRepository;
         private ICommentRepository _commentRepository;
         private ITagRepository _tagRepository;
@@ -30,7 +30,7 @@ namespace Blog.DAL.Repositories
 
         public BlogRoleManager RoleManager => _roleManager ?? (_roleManager = new BlogRoleManager(new RoleStore<Role>(_context)));
 
-        public IClientProfileRepository ClientProfileRepository => _clientProfileRepository ?? (_clientProfileRepository = new ClientProfilesRepository(_context));
+        public IUserProfileRepository UserProfileRepository => _userProfileRepository ?? (_userProfileRepository = new UserProfilesRepository(_context));
 
         public IPostRepository PostRepository => _postRepository ?? (_postRepository = new PostRepository(_context));
         public ICommentRepository CommentRepository => _commentRepository ?? ( _commentRepository = new CommentRepository(_context));

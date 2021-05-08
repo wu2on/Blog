@@ -15,7 +15,6 @@ namespace Blog.DAL.Entities
 
         [Required] 
         public DateTime CreateAt { get; set; }
-        [Required]
         public string UserProfileId { get; set; }
         public UserProfile UserProfile { get; set; }
         public ICollection<Tag> Tag { get; set; }

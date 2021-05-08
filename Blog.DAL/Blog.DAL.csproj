@@ -83,6 +83,10 @@
     <Compile Include="Migrations\202105062119546_FullBlog.designer.cs">
       <DependentUpon>202105062119546_FullBlog.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105082047156_ChangedRelationship.cs" />
+    <Compile Include="Migrations\202105082047156_ChangedRelationship.designer.cs">
+      <DependentUpon>202105082047156_ChangedRelationship.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\UserProfilesRepository.cs" />
@@ -102,6 +106,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105062119546_FullBlog.resx">
       <DependentUpon>202105062119546_FullBlog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105082047156_ChangedRelationship.resx">
+      <DependentUpon>202105082047156_ChangedRelationship.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />
