@@ -1,6 +1,8 @@
 ﻿using Blog.DAL.Interfaces.Entities;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace Blog.DAL.Interfaces.Repositories
 {
@@ -8,7 +10,7 @@ namespace Blog.DAL.Interfaces.Repositories
     {
         IEnumerable<TEntity> GetAll();
         TEntity Get(TKey id);
-        IEnumerable<TEntity> Find(Func<TEntity, Boolean> predicate);
+        IQueryable<TEntity> Find(Expression<Func<TEntity, Boolean>> predicate);
         TEntity Create(TEntity entity);
         void CreateMany(ICollection<TEntity> entities);
         void Update(TEntity entity);

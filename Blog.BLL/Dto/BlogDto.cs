@@ -8,9 +8,10 @@ namespace Blog.BLL.Dto
 {
     public class BlogDto
     {
+        public int Id { get; set; }
         public string Title { get; set; }
         public string Text { get; set; }
-        public DateTime Date { get; set; }
+        public DateTime CreateAt { get; set; }
         public string UserProfile_Id { get; set; }
         public bool IsDeleted { get; set; }
     }

@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 
 namespace Blog.DAL.Repositories
 {
@@ -37,9 +38,11 @@ namespace Blog.DAL.Repositories
         }
 
 
-        public IEnumerable<TEntity> Find(Func<TEntity, bool> predicate)
+        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
         {
-            throw new NotImplementedException();
+            IQueryable<TEntity> query = DbSet;
+
+            return query.Where(predicate);
         }
 
         public TEntity Get(TKey Id)

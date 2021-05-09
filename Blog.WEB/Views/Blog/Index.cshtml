@@ -1,1 +1,39 @@
-﻿
+﻿@using Blog.BLL.Dto
+@model List<BlogDto>
+
+<div>
+    <h4>BlogDto</h4>
+    <hr />
+    @foreach (BlogDto m in Model)
+    {
+        <dl class="dl-horizontal">
+            <dt>
+                @m.Id
+            </dt>
+
+            <dd>
+                @m.Title
+            </dd>
+
+            <dt>
+                @m.Text
+            </dt>
+
+            <dd>
+                @m.IsDeleted
+            </dd>
+
+            <dt>
+                @m.UserProfile_Id
+            </dt>
+
+            <dd>
+                @m.CreateAt
+            </dd>
+        </dl>
+    }
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.FirstOrDefault().Id })*@
+    @Html.ActionLink("Back to List", "Index")
+</p>

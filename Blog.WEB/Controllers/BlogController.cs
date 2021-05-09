@@ -24,7 +24,9 @@ namespace Blog.WEB.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            string currentUserId = HttpContext.User.Identity.GetUserId();
+            List<BlogDto> blogs = BlogService.GetAllUserBlogs(currentUserId);
+            return View(blogs);
         }
 
         // GET: Blog/Details/5
@@ -53,7 +55,7 @@ namespace Blog.WEB.Controllers
                 {
                     Title = model.Title,
                     Text = model.Text,
-                    Date = DateTime.Now,
+                    CreateAt = DateTime.Now,
                     UserProfile_Id = currentUserId,
                     IsDeleted = false
                 };
