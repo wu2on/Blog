@@ -8,7 +8,9 @@ namespace Blog.BLL.Interfaces
     public interface IBlogService
     {
         Task<OperationDetails> Create(BlogDto blogDto);
+        Task<OperationDetails> AddComment(CommentDto commentDto);
         List<BlogDto> GetAllUserBlogs(string Id);
+        List<BlogDto> GetAllBlogs();
         void Dispose();
     }
 }

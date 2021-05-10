@@ -52,7 +52,7 @@ namespace Blog.DAL.Repositories
 
         public IEnumerable<TEntity> GetAll()
         {
-            throw new NotImplementedException();
+            return DbSet.ToList();
         }
 
         public void Update(TEntity entity)

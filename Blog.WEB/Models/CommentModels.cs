@@ -2,10 +2,8 @@
 
 namespace Blog.WEB.Models
 {
-    public class BlogModel
+    public class CreateCommentModel
     {
-       [Required]
-        public string Title { get; set; }
         [Required]
         public string Text { get; set; }
     }

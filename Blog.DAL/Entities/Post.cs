@@ -17,6 +17,7 @@ namespace Blog.DAL.Entities
         public DateTime CreateAt { get; set; }
         public string UserProfileId { get; set; }
         public UserProfile UserProfile { get; set; }
+        public ICollection<Comment> Comment { get; set; }
         public ICollection<Tag> Tag { get; set; }
 
         [Required]
@@ -24,6 +25,7 @@ namespace Blog.DAL.Entities
 
         public Post()
         {
+            Comment = new List<Comment>();
             Tag = new List<Tag>();
         }
     }

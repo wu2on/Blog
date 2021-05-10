@@ -26,6 +26,7 @@ namespace Blog.WEB.Controllers
         {
             string currentUserId = HttpContext.User.Identity.GetUserId();
             List<BlogDto> blogs = BlogService.GetAllUserBlogs(currentUserId);
+            var blog = blogs.FirstOrDefault();
             return View(blogs);
         }
 
@@ -45,7 +46,7 @@ namespace Blog.WEB.Controllers
         [HttpPost]
         [Authorize]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(BlogModel model)
+        public async Task<ActionResult> Create(CreateBlogModel model)
         {
             if(ModelState.IsValid)
             {
@@ -56,7 +57,7 @@ namespace Blog.WEB.Controllers
                     Title = model.Title,
                     Text = model.Text,
                     CreateAt = DateTime.Now,
-                    UserProfile_Id = currentUserId,
+                    UserProfileId = currentUserId,
                     IsDeleted = false
                 };
 
@@ -68,6 +69,29 @@ namespace Blog.WEB.Controllers
             }
             
             return View();
+        }
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> AddComment(string postId, string comment)
+        {
+            if(ModelState.IsValid)
+            {
+                string currentUserId = HttpContext.User.Identity.GetUserId();
+
+                CommentDto commentDto = new CommentDto
+                {
+                    Text = comment,
+                    CreateAt = DateTime.Now,
+                    UserProfileId = currentUserId,
+                    PostId = Int32.Parse(postId),
+                    IsDeleted = false
+                };
+                await BlogService.AddComment(commentDto);
+            }
+
+            return RedirectToAction("Index", "Blog");
+
         }
         
         // GET: Blog/Edit/5

@@ -22,7 +22,7 @@ namespace Blog.BLL.Services
         {
             if(blogDto != null)
             {
-                Post post = new Post { Title = blogDto.Title, Text = blogDto.Text, CreateAt = blogDto.CreateAt, IsDeleted = blogDto.IsDeleted, UserProfileId = blogDto.UserProfile_Id };
+                Post post = new Post { Title = blogDto.Title, Text = blogDto.Text, CreateAt = blogDto.CreateAt, IsDeleted = blogDto.IsDeleted, UserProfileId = blogDto.UserProfileId };
 
                 Post create = _uow.PostRepository.Create(post);
                 await _uow.SaveAsync();
@@ -33,13 +33,37 @@ namespace Blog.BLL.Services
             }
             
         }
+
+        public async Task<OperationDetails> AddComment(CommentDto commentDto)
+        {
+            if (commentDto != null)
+            {
+                Comment comment = new Comment { Text = commentDto.Text, PostId = commentDto.PostId, IsDeleted = commentDto.IsDeleted, CreateAt = commentDto.CreateAt, UserProfileId = commentDto.UserProfileId};
+
+                Comment create = _uow.CommentRepository.Create(comment);
+                await _uow.SaveAsync();
+                return new OperationDetails(true, "Blog has been successfully created", "");
+            }
+            else
+            {
+                return new OperationDetails(false, "Things went wrong... maybe blog is empty", "");
+            }
+
+        }
         public List<BlogDto> GetAllUserBlogs(string Id)
         {
-           //List<Post> userBlogs = _uow.PostRepository.Find((x => x.UserProfileId == Id)).ToList();
-           var config = new MapperConfiguration(cfg => cfg.CreateMap<Post, BlogDto>());
+           var config = new MapperConfiguration(cfg => cfg.CreateMap<Post, BlogDto>().ForMember("Email", opt => opt.MapFrom(d => d.UserProfile)).ForMember("Comments", opt => opt.MapFrom(c => c.Comment)));
            var mapper = new Mapper(config);
            var userBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.Find((x => x.UserProfileId == Id)));
            return userBlogs;
+        }
+
+        public List<BlogDto> GetAllBlogs()
+        {
+            var config = new MapperConfiguration(cfg => cfg.CreateMap<Post, BlogDto>());
+            var mapper = new Mapper(config);
+            var usersBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.GetAll());
+            return usersBlogs;
         }
         public void Dispose()
         {

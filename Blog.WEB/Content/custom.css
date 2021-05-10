@@ -10,6 +10,7 @@
     font-size: 2rem;
 }
 
-.custom-bg {
-    background-image: url()
+.custom-datetime {
+    text-align: right;
+    margin-left: 74%;
 }

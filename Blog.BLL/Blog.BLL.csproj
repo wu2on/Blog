@@ -61,6 +61,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dto\BlogDto.cs" />
+    <Compile Include="Dto\CommentDto.cs" />
     <Compile Include="Dto\UserDto.cs" />
     <Compile Include="Infrastructure\OperationDetails.cs" />
     <Compile Include="Infrastructure\ServiceModule.cs" />
