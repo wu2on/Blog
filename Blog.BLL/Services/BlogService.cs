@@ -51,19 +51,31 @@ namespace Blog.BLL.Services
 
         }
         public List<BlogDto> GetAllUserBlogs(string Id)
-        {
-           var config = new MapperConfiguration(cfg => cfg.CreateMap<Post, BlogDto>().ForMember("Email", opt => opt.MapFrom(d => d.UserProfile)).ForMember("Comments", opt => opt.MapFrom(c => c.Comment)));
+        { 
+            var result = _uow.PostRepository.GetWithInclude(x => x.UserProfileId == Id, p => p.UserProfile);
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Post, BlogDto>();
+                cfg.CreateMap<UserProfile, UserDto>();
+            });
+            
            var mapper = new Mapper(config);
-           var userBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.Find((x => x.UserProfileId == Id)));
+           var userBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.GetWithInclude(x => x.UserProfileId == Id, p => p.UserProfile));
            return userBlogs;
         }
 
         public List<BlogDto> GetAllBlogs()
         {
-            var config = new MapperConfiguration(cfg => cfg.CreateMap<Post, BlogDto>());
+            var config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Post, BlogDto>();
+                cfg.CreateMap<UserProfile, UserDto>();
+                cfg.CreateMap<Comment, CommentDto>();
+            });
+
             var mapper = new Mapper(config);
-            var usersBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.GetAll());
-            return usersBlogs;
+            var userBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.GetWithInclude(p => p.UserProfile, c => c.Comment));
+            return userBlogs;
         }
         public void Dispose()
         {

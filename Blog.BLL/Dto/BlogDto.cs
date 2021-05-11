@@ -13,8 +13,8 @@ namespace Blog.BLL.Dto
         public string Text { get; set; }
         public DateTime CreateAt { get; set; }
         public string UserProfileId { get; set; }
-        public UserDto Email {get; set; }
-        IList<CommentDto> Comments { get; set; }
+        public UserDto UserProfile {get; set; }
+        public IList<CommentDto> Comment { get; set; }
         public bool IsDeleted { get; set; }
     }
 }
