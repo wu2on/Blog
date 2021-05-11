@@ -38,11 +38,11 @@ namespace Blog.BLL.Services
         {
             if (commentDto != null)
             {
-                Comment comment = new Comment { Text = commentDto.Text, PostId = commentDto.PostId, IsDeleted = commentDto.IsDeleted, CreateAt = commentDto.CreateAt, UserProfileId = commentDto.UserProfileId};
+                Comment comment = new Comment { Text = commentDto.Text, PostId = commentDto.PostId, IsDeleted = commentDto.IsDeleted, CreateAt = commentDto.CreateAt, UserProfileId = commentDto.UserProfileId, UserEmail = commentDto.UserEmail };
 
                 Comment create = _uow.CommentRepository.Create(comment);
                 await _uow.SaveAsync();
-                return new OperationDetails(true, "Blog has been successfully created", "");
+                return new OperationDetails(true, "Comment has been successfully created", "");
             }
             else
             {
@@ -66,11 +66,12 @@ namespace Blog.BLL.Services
 
         public List<BlogDto> GetAllBlogs()
         {
+            var result = _uow.PostRepository.GetWithInclude(p => p.UserProfile, c => c.Comment);
             var config = new MapperConfiguration(cfg =>
             {
                 cfg.CreateMap<Post, BlogDto>();
                 cfg.CreateMap<UserProfile, UserDto>();
-                cfg.CreateMap<Comment, CommentDto>();
+                cfg.CreateMap<Comment, CommentDto>().ForMember("UserProfile", x => x.MapFrom(c => c.UserProfile));
             });
 
             var mapper = new Mapper(config);

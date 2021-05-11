@@ -17,6 +17,7 @@ namespace Blog.DAL.Entities
         [Required]
         public string UserProfileId { get; set; }
         public UserProfile UserProfile { get; set; }
+        public string UserEmail { get; set; }
         public int PostId { get; set; }
         public Post Post { get; set; }
 

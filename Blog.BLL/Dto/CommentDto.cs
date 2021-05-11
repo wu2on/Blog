@@ -12,6 +12,7 @@ namespace Blog.BLL.Dto
         public string Text { get; set; }
         public bool IsDeleted { get; set; }
         public string UserProfileId { get; set; }
+        public string UserEmail { get; set; }
         public DateTime CreateAt { get; set; }
         public int PostId { get; set; }
 

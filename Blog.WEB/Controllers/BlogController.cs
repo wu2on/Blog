@@ -73,25 +73,25 @@ namespace Blog.WEB.Controllers
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddComment(string postId, string comment)
+        public async Task<ActionResult> AddComment(string postId, string comment, string url)
         {
             if(ModelState.IsValid)
             {
-                string currentUserId = HttpContext.User.Identity.GetUserId();
+                var currentUser = HttpContext.User.Identity;
 
                 CommentDto commentDto = new CommentDto
                 {
                     Text = comment,
                     CreateAt = DateTime.Now,
-                    UserProfileId = currentUserId,
+                    UserProfileId = currentUser.GetUserId(),
+                    UserEmail = currentUser.Name,
                     PostId = Int32.Parse(postId),
                     IsDeleted = false
                 };
                 await BlogService.AddComment(commentDto);
             }
 
-            return RedirectToAction("Index", "Blog");
-
+            return RedirectToAction("Index", url);
         }
         
         // GET: Blog/Edit/5
