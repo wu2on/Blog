@@ -10,6 +10,10 @@
     font-size: 2rem;
 }
 
+.custom-nav:hover {
+    color: #00fdc7 !important;
+}
+
 .custom-datetime {
     text-align: right;
     margin-left: 74%;
@@ -17,4 +21,60 @@
 
 .custom-bth {
     font-size: 16px;
+}
+
+.custom-bd {
+    margin-top: 4rem;
+    background-color: #372963;
+}
+
+.custom-blog {
+    padding: 8px;
+    background-color: #261d45;
+    border-color: #1d1833;
+    animation-direction: alternate;
+    animation-duration: 1.5s;
+    animation-iteration-count: infinite;
+    animation-name: slidein;
+}
+
+@keyframes slidein {
+    from {
+        box-shadow: 0px 0px 15px #00f897;
+    }
+
+    to {
+        box-shadow: 0px 0px 0px #261d45;
+    }
+}
+
+.custom-author {
+    background-color: #1e1737;
+    color: #027ff6;
+}
+
+.custom-blog_title {
+    color: #fff;
+}
+
+.custom-blog_text {
+    color: #bcbac3;
+}
+
+.custom-blog_time {
+    padding-right: 2rem;
+    color: #b08bff;
+}
+
+.custom-comment {
+    word-wrap: break-word;
+    margin: 8px auto;
+    width: 96%;
+    background-color: #1d1833;
+    border: 1px solid #5e1e6f;
+    border-radius: 1rem;
+}
+
+.custom-comment_block {
+    padding: 5px;
 }

@@ -71,7 +71,7 @@ namespace Blog.BLL.Services
             {
                 cfg.CreateMap<Post, BlogDto>();
                 cfg.CreateMap<UserProfile, UserDto>();
-                cfg.CreateMap<Comment, CommentDto>().ForMember("UserProfile", x => x.MapFrom(c => c.UserProfile));
+                cfg.CreateMap<Comment, CommentDto>();
             });
 
             var mapper = new Mapper(config);
