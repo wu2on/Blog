@@ -38,16 +38,30 @@ namespace Blog.DAL.Repositories
         }
 
 
-        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate)
+        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate = null)
         {
             IQueryable<TEntity> query = DbSet;
 
-            return query.Where(predicate);
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+
+            return query;
         }
 
-        public TEntity Get(TKey Id)
+        public TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> predicate = null)
         {
-            throw new NotImplementedException();
+            IQueryable<TEntity> query = DbSet;
+
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+
+            return query.FirstOrDefault();
         }
 
         public IEnumerable<TEntity> GetAll()

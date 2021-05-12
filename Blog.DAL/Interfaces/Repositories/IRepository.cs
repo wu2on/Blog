@@ -9,7 +9,7 @@ namespace Blog.DAL.Interfaces.Repositories
     public interface IRepository<TEntity, TKey> where TEntity : class, IEntity<TKey>
     {
         IEnumerable<TEntity> GetAll();
-        TEntity Get(TKey id);
+        TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> predicate);
         IQueryable<TEntity> Find(Expression<Func<TEntity, Boolean>> predicate);
         TEntity Create(TEntity entity);
         void CreateMany(ICollection<TEntity> entities);

@@ -26,7 +26,6 @@ namespace Blog.WEB.Controllers
         {
             string currentUserId = HttpContext.User.Identity.GetUserId();
             List<BlogDto> blogs = BlogService.GetAllUserBlogs(currentUserId);
-            var blog = blogs.FirstOrDefault();
             return View(blogs);
         }
 
