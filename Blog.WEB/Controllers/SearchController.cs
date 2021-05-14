@@ -1,4 +1,7 @@
-﻿using Blog.WEB.Models;
+﻿using Blog.BLL.Dto;
+using Blog.BLL.Interfaces;
+using Blog.WEB.Models;
+using System;
 using System.Web.Mvc;
 
 
@@ -6,31 +9,29 @@ namespace Blog.WEB.Controllers
 {
     public class SearchController : Controller
     {
-        // GET: Search
+        private IBlogService BlogService;
+
+        public SearchController(IBlogService service)
+        {
+            BlogService = service;
+        }
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult Tag()
-        {
-            return View();
-        }
-
-        public ActionResult Text()
-        {
-            return View();
-        }
-
         [HttpPost]
-        public ActionResult Tag(SearchModel model)
+        public ActionResult Index(SearchModel model)
         {
-            return View();
-        }
-        [HttpPost]
-        public ActionResult Text(SearchModel model)
-        {
-            return View();
+
+            if (ModelState.IsValid)
+            {
+                SearchDto search = new SearchDto { Text = model.Text };
+
+                BlogService.SearchBlogs(search);
+            }
+
+            throw new NotImplementedException();
         }
     }
 }

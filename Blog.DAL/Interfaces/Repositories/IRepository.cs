@@ -16,7 +16,7 @@ namespace Blog.DAL.Interfaces.Repositories
         void Update(TEntity entity);
         void Delete(TKey id);
 
-        IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties);
-        IEnumerable<TEntity> GetWithInclude(Func<TEntity, bool> predicate, params Expression<Func<TEntity, object>>[] includeProperties);
+        IEnumerable<TEntity> GetRange(params Expression<Func<TEntity, object>>[] includeProperties);
+        IEnumerable<TEntity> GetRange(Func<TEntity, bool> predicate, params Expression<Func<TEntity, object>>[] includeProperties);
     }
 }

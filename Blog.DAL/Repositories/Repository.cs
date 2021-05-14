@@ -73,16 +73,16 @@ namespace Blog.DAL.Repositories
         {
             throw new NotImplementedException();
         }
-        public IEnumerable<TEntity> GetWithInclude(params Expression<Func<TEntity, object>>[] includeProperties)
+        public IEnumerable<TEntity> GetRange(params Expression<Func<TEntity, object>>[] includeProperties)
         {
             return Include(includeProperties).ToList();
         }
 
-        public IEnumerable<TEntity> GetWithInclude(Func<TEntity, bool> predicate,
+        public IEnumerable<TEntity> GetRange(Func<TEntity, bool> predicate,
             params Expression<Func<TEntity, object>>[] includeProperties)
         {
             var query = Include(includeProperties);
-            return query.Where(predicate).ToList();
+            return query.Where(predicate);
         }
 
         private IQueryable<TEntity> Include(params Expression<Func<TEntity, object>>[] includeProperties)

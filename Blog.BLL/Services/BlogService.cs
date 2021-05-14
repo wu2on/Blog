@@ -4,6 +4,7 @@ using Blog.BLL.Infrastructure;
 using Blog.BLL.Interfaces;
 using Blog.DAL.Entities;
 using Blog.DAL.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -84,7 +85,7 @@ namespace Blog.BLL.Services
             });
 
             Mapper mapper = new Mapper(config);
-            List<BlogDto> userBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.GetWithInclude(x => x.UserProfileId == Id, p => p.UserProfile, c => c.Comment));
+            List<BlogDto> userBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.GetRange(x => x.UserProfileId == Id, p => p.UserProfile, c => c.Comment).OrderByDescending(x => x.CreateAt));
             return userBlogs;
         }
 
@@ -98,8 +99,23 @@ namespace Blog.BLL.Services
             });
 
             Mapper mapper = new Mapper(config);
-            List<BlogDto> usersBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.GetWithInclude(p => p.UserProfile, c => c.Comment));
+            List<BlogDto> usersBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.GetRange(p => p.UserProfile, c => c.Comment).OrderByDescending(x => x.CreateAt));
             return usersBlogs;
+        }
+
+        public List<SearchDto> SearchBlogs(SearchDto searchDto)
+        {
+            if(searchDto != null)
+            {
+                IEnumerable<string> uniqueTags = CheckUniqueTags(searchDto.Text);
+
+                if(uniqueTags != null)
+                {
+                    var result = _uow.TagRepository.GetRange(p => p.Post);
+                }
+            }
+
+            throw new NotImplementedException();
         }
         public void Dispose()
         {
