@@ -78,3 +78,9 @@
 .custom-comment_block {
     padding: 5px;
 }
+
+.custom-logout_btn {
+    background-color: #122642;
+    border-color: #ff9a03;
+    margin-top: 16px;
+}

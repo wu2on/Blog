@@ -24,8 +24,8 @@ namespace Blog.BLL.Services
             if (blogDto != null)
             {
                 List<Tag> tags = new List<Tag>();
-                Regex regex = new Regex(@"(?<=#)\w+");
-                IEnumerable<string> uniqueTags = Unique(regex.Matches(blogDto.Text));
+                
+                IEnumerable<string> uniqueTags = CheckUniqueTags(blogDto.Text);
 
                 if(uniqueTags != null)
                 {
@@ -106,8 +106,11 @@ namespace Blog.BLL.Services
             _uow.Dispose();
         }
 
-        private IEnumerable<string> Unique(MatchCollection matches)
+        private IEnumerable<string> CheckUniqueTags(string text)
         {
+            
+            Regex regex = new Regex(@"(?<=#)\w+");
+            MatchCollection matches = regex.Matches(text);
             List<string> tags = null;
             IEnumerable<string> uniqueTags = null;
 
@@ -120,7 +123,7 @@ namespace Blog.BLL.Services
                     tags.Add(tag.Value.ToLower());
                 }
 
-                uniqueTags = tags.Distinct<string>();
+                uniqueTags = tags.Distinct();
 
                 return uniqueTags;
 

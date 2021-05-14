@@ -175,6 +175,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\BlogModels.cs" />
+    <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\CommentModels.cs" />
     <Compile Include="Models\RegisterModel.cs" />
     <Compile Include="Models\SignInModel.cs" />
@@ -226,6 +227,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Blog\Index.cshtml" />
     <Content Include="Views\Blog\Create.cshtml" />
+    <Content Include="Views\Search\Tag.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
