@@ -10,7 +10,6 @@ namespace Blog.DAL.Interfaces.Repositories
     {
         IEnumerable<TEntity> GetAll();
         TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> predicate);
-        IQueryable<TEntity> Find(Expression<Func<TEntity, Boolean>> predicate);
         TEntity Create(TEntity entity);
         void CreateMany(ICollection<TEntity> entities);
         void Update(TEntity entity);

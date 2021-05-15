@@ -10,6 +10,7 @@ using Blog.BLL.Dto;
 using Blog.BLL.Infrastructure;
 using Blog.BLL.Interfaces;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace Blog.WEB.Controllers
 {
@@ -23,22 +24,37 @@ namespace Blog.WEB.Controllers
         }
         public ActionResult Index()
         {
-            List<BlogDto> blogs = BlogService.GetAllBlogs();
+            MapperConfiguration config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<BlogDto, BlogPreviewModel>().ForMember("UserEmail", x => x.MapFrom(c => c.UserProfile.Email));
+            });
+
+            Mapper mapper = new Mapper(config);
+
+            List<BlogPreviewModel> blogs = mapper.Map<List<BlogPreviewModel>>(BlogService.GetAllBlogs());
+
             return View(blogs);
         }
-
-        public ActionResult About()
+       
+        public ActionResult Details(int Id)
         {
-            ViewBag.Message = "Your application description page.";
-            var result = HttpContext.GetOwinContext().Authentication.User;
-            return View();
+            var blog  = BlogService.GetDetails(Id);
+
+            return View(blog);
         }
 
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
+        //public ActionResult Contact()
+        //{
+        //    MapperConfiguration config = new MapperConfiguration(cfg =>
+        //    {
+        //        cfg.CreateMap<BlogDto, BlogPreviewModel>();
+        //    });
 
-            return View();
-        }
+        //    Mapper mapper = new Mapper(config);
+
+        //    List<BlogPreviewModel> blogs = mapper.Map<List<BlogPreviewModel>>(BlogService.GetAllBlogs());
+
+        //    return View(blogs);
+        //}
     }
 }

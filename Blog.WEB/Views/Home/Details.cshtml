@@ -1,0 +1,56 @@
+﻿@using Blog.BLL.Dto
+@model BlogDto
+    
+@if (Request.IsAuthenticated)
+{
+    <div class="row">
+        <div class="col-lg">
+            <div class="thumbnail custom-blog">
+                <span class="label label-default text-left custom-author">@Model.UserProfile.Email</span>
+                <div class="caption">
+                    <h3 class="text-center custom-blog_title">
+                        @Model.Title
+                    </h3>
+                    <p class="custom-blog_text">
+                        @Model.Text
+                    </p>
+                    <div class="text-right">
+                        <span class="custom-blog_time">
+                            @Model.CreateAt
+                        </span>
+                    </div>
+                </div>
+                <div class="custom-comment_block">
+                @foreach (CommentDto c in Model.Comment)
+                {
+                    if (c != null)
+                    {
+                    <div class="well well-sm custom-comment">
+                        <span class="label label-default text-left custom-author">@c.UserEmail</span>
+                        <div class="custom-blog_text small">
+                            @c.Text
+                        </div>
+                        <div class="text-right">
+                            <span class="custom-blog_time small">@c.CreateAt</span>
+                        </div>
+                    </div>
+                    }
+                }
+                </div>
+                
+                @using (Html.BeginForm("AddComment", "Blog", FormMethod.Post))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="comment" placeholder="Add a comment..." />
+                        <input type="text" class="hidden" name="postId" value="@Model.Id" />
+                        <span class="input-group-btn">
+                            <button type="submit" name="url" value="@Request.Url.AbsoluteUri" class="btn-primary custom-bth">Post</button>
+                        </span>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    
+}

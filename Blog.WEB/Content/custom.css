@@ -57,14 +57,28 @@
     color: #fff;
 }
 
+.custom-blog_preview {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    -ms-line-clamp: 2;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    display: -webkit-box;
+    display: box;
+    word-wrap: break-word;
+    -webkit-box-orient: vertical;
+    box-orient: vertical;
+    color: #bcbac3;
+}
+
 .custom-blog_text {
     color: #bcbac3;
 }
 
-.custom-blog_time {
-    padding-right: 2rem;
-    color: #b08bff;
-}
+    .custom-blog_time {
+        padding-right: 2rem;
+        color: #b08bff;
+    }
 
 .custom-comment {
     word-wrap: break-word;

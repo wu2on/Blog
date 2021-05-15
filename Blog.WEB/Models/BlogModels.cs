@@ -10,6 +10,7 @@ namespace Blog.WEB.Models
         public int Id { get; set; }
         public string Title { get; set; }
         public string Text { get; set; }
+        public string UserEmail { get; set; }
         public DateTime CreateAt { get; set; }
     }
     public class ViewBlogModel

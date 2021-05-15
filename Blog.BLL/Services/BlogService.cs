@@ -75,6 +75,22 @@ namespace Blog.BLL.Services
             }
 
         }
+
+        public BlogDto GetDetails(int Id)
+        {
+            MapperConfiguration config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Post, BlogDto>();
+                cfg.CreateMap<UserProfile, UserDto>();
+                cfg.CreateMap<Comment, CommentDto>();
+            });
+
+            Mapper mapper = new Mapper(config);
+
+            BlogDto blog = mapper.Map<BlogDto>(_uow.PostRepository.GetRange(x => x.Id == Id, p => p.UserProfile, c => c.Comment).FirstOrDefault());
+
+            return blog;
+        }
         public List<BlogDto> GetAllUserBlogs(string Id)
         {
             MapperConfiguration config = new MapperConfiguration(cfg =>

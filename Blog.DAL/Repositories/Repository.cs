@@ -37,8 +37,7 @@ namespace Blog.DAL.Repositories
             TEntity entity = DbSet.FirstOrDefault(e => e.Id.Equals(id));
         }
 
-
-        public IQueryable<TEntity> Find(Expression<Func<TEntity, bool>> predicate = null)
+        public TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
             IQueryable<TEntity> query = DbSet;
 
@@ -46,20 +45,6 @@ namespace Blog.DAL.Repositories
             {
                 query = query.Where(predicate);
             }
-
-
-            return query;
-        }
-
-        public TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> predicate = null)
-        {
-            IQueryable<TEntity> query = DbSet;
-
-            if (predicate != null)
-            {
-                query = query.Where(predicate);
-            }
-
 
             return query.FirstOrDefault();
         }
