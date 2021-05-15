@@ -107,12 +107,18 @@ namespace Blog.BLL.Services
         {
             if(searchDto != null)
             {
-                IEnumerable<string> uniqueTags = CheckUniqueTags(searchDto.Text);
+                string uniqueTags = CheckUniqueTags(searchDto.Text).FirstOrDefault();
 
                 if(uniqueTags != null)
                 {
-                    var result = _uow.TagRepository.GetRange(p => p.Post);
+                    var post = _uow.TagRepository.GetRange(p => p.Body == uniqueTags, x => x.Post).Select(c => c.Post).ToList();
+                } 
+                else if(uniqueTags == null)
+                {
+                    var post = _uow.PostRepository.GetRange(p => p.Comment, p => p.UserProfile).Where(x => x.Text.Contains(searchDto.Text)).ToList();
                 }
+
+                
             }
 
             throw new NotImplementedException();
