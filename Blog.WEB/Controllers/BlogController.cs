@@ -147,6 +147,18 @@ namespace Blog.WEB.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public ActionResult DeleteComment(int? Id, string url)
+        {
+            if(ModelState.IsValid)
+            {
+                var currentUser = HttpContext.User.Identity.GetUserId();
+
+                BlogService.DeleteComment(Id, currentUser);
+            }
+
+            return Redirect(url);
+        }
         // GET: Blog/Delete/5
         public ActionResult Delete(int id)
         {

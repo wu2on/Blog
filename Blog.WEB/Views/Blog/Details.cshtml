@@ -39,6 +39,17 @@
                                     <span class="custom-blog_time small">@c.CreateAt</span>
                                 </div>
                             </div>
+
+                            using (Html.BeginForm("DeleteComment", "Blog", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <div class="input-group">
+                                    <input type="text" class="hidden" name="Id" value="@c.Id" />
+                                    <span class="input-group-btn">
+                                        <button type="submit" name="url" value="@Request.Url.AbsoluteUri" class="btn-danger custom-bth">Detele</button>
+                                    </span>
+                                </div>
+                            }
                         }
                     }
                 </div>

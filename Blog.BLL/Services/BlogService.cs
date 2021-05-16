@@ -80,7 +80,7 @@ namespace Blog.BLL.Services
         {
             MapperConfiguration config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<Post, BlogDto>();
+                cfg.CreateMap<Post, BlogDto>().ForMember(dest => dest.Comment, opt => opt.MapFrom(src => src.Comment.Where(o => !o.IsDeleted)));
                 cfg.CreateMap<UserProfile, UserDto>();
                 cfg.CreateMap<Comment, CommentDto>();
             });
@@ -95,13 +95,13 @@ namespace Blog.BLL.Services
         {
             MapperConfiguration config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<Post, BlogDto>();
+                cfg.CreateMap<Post, BlogDto>().ForMember(dest => dest.Comment, opt => opt.MapFrom(src => src.Comment.Where(o => !o.IsDeleted)));
                 cfg.CreateMap<UserProfile, UserDto>();
                 cfg.CreateMap<Comment, CommentDto>();
             });
 
             Mapper mapper = new Mapper(config);
-            List<BlogDto> userBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.GetRange(x => x.UserProfileId == Id, p => p.UserProfile, c => c.Comment).OrderByDescending(x => x.CreateAt));
+            List<BlogDto> userBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.GetRange(x => x.UserProfileId == Id && !x.IsDeleted, p => p.UserProfile, c => c.Comment).OrderByDescending(x => x.CreateAt));
             return userBlogs;
         }
 
@@ -109,12 +109,13 @@ namespace Blog.BLL.Services
         {
             MapperConfiguration config = new MapperConfiguration(cfg =>
             {
-                cfg.CreateMap<Post, BlogDto>();
+                cfg.CreateMap<Post, BlogDto>().ForMember(dest => dest.Comment, opt => opt.MapFrom(src => src.Comment.Where(o => !o.IsDeleted)));
                 cfg.CreateMap<UserProfile, UserDto>();
                 cfg.CreateMap<Comment, CommentDto>();
             });
 
             Mapper mapper = new Mapper(config);
+
             List<BlogDto> usersBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.GetRange(p => p.UserProfile, c => c.Comment).OrderByDescending(x => x.CreateAt));
             return usersBlogs;
         }
@@ -166,6 +167,29 @@ namespace Blog.BLL.Services
 
             return new OperationDetails(false, "Things went wrong...", "");
         }
+        
+        public async Task<OperationDetails> DeleteComment(int? Id, string userId)
+        {
+            if (Id != null)
+            {
+                var result = _uow.CommentRepository.GetFirstOrDefault(x => x.Id == Id);
+                if(result.UserProfileId == userId)
+                {
+                    result.IsDeleted = true;
+                    _uow.CommentRepository.Update(result);
+                    await _uow.SaveAsync();
+                    return new OperationDetails(true, "Blog has been successfully updated", "");
+                } else
+                {
+                    return new OperationDetails(false, "No rights to delete", "");
+                }
+                
+            }
+
+            return new OperationDetails(false, "Things went wrong...", "");
+        }
+
+
         public void Dispose()
         {
             _uow.Dispose();

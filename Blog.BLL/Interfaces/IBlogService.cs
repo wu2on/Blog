@@ -13,6 +13,7 @@ namespace Blog.BLL.Interfaces
         List<BlogDto> GetAllBlogs();
         BlogDto GetDetails(int? Id);
         Task<OperationDetails> UpdateBlog(BlogDto blogDto);
+        Task<OperationDetails> DeleteComment(int? Id, string userId);
         List<BlogDto> SearchBlogs(SearchDto searchDto);
         void Dispose();
     }
