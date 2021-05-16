@@ -28,23 +28,26 @@
     background-color: #372963;
 }
 
-.custom-blog {
-    padding: 8px;
-    background-color: #261d45;
-    border-color: #1d1833;
+.custom-animation_border {
     animation-direction: alternate;
     animation-duration: 1.5s;
     animation-iteration-count: infinite;
     animation-name: slidein;
 }
 
+.custom-blog {
+    padding: 8px;
+    background-color: #261d45;
+    border-color: #1d1833;
+}
+
 @keyframes slidein {
     from {
-        box-shadow: 0px 0px 15px #00f897;
+        box-shadow: 0px 0px 0px #261d45;
     }
 
     to {
-        box-shadow: 0px 0px 0px #261d45;
+        box-shadow: 0px 0px 15px #00f897;
     }
 }
 
@@ -97,4 +100,5 @@
     background-color: #122642;
     border-color: #ff9a03;
     margin-top: 16px;
+    margin-top: 10px;
 }

@@ -1,7 +1,9 @@
-﻿using Blog.BLL.Dto;
+﻿using AutoMapper;
+using Blog.BLL.Dto;
 using Blog.BLL.Interfaces;
 using Blog.WEB.Models;
 using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 
 
@@ -21,17 +23,27 @@ namespace Blog.WEB.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(SearchModel model)
+        public ActionResult Result(SearchModel model)
         {
+            MapperConfiguration config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<BlogDto, BlogPreviewModel>().ForMember("UserEmail", x => x.MapFrom(c => c.UserProfile.Email));
+            });
+
+            Mapper mapper = new Mapper(config);
 
             if (ModelState.IsValid)
             {
                 SearchDto search = new SearchDto { Text = model.Text };
 
-                BlogService.SearchBlogs(search);
+                var result = BlogService.SearchBlogs(search);
+
+                List<BlogPreviewModel> blogs = mapper.Map<List<BlogPreviewModel>>(result);
+
+                return View(blogs);
             }
 
-            throw new NotImplementedException();
+            return View();
         }
     }
 }

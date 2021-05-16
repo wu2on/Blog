@@ -12,7 +12,7 @@ namespace Blog.BLL.Interfaces
         List<BlogDto> GetAllUserBlogs(string Id);
         List<BlogDto> GetAllBlogs();
         BlogDto GetDetails(int Id);
-        List<SearchDto> SearchBlogs(SearchDto searchDto);
+        List<BlogDto> SearchBlogs(SearchDto searchDto);
         void Dispose();
     }
 }

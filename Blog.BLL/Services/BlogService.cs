@@ -119,22 +119,35 @@ namespace Blog.BLL.Services
             return usersBlogs;
         }
 
-        public List<SearchDto> SearchBlogs(SearchDto searchDto)
+        public List<BlogDto> SearchBlogs(SearchDto searchDto)
         {
-            if(searchDto != null)
+            MapperConfiguration config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<Post, BlogDto>();
+                cfg.CreateMap<UserProfile, UserDto>();
+            });
+
+            Mapper mapper = new Mapper(config);
+            if (searchDto != null)
             {
                 string uniqueTags = CheckUniqueTags(searchDto.Text).FirstOrDefault();
 
+                List<Post> searchResults = null;
+
                 if(uniqueTags != null)
                 {
-                    var post = _uow.TagRepository.GetRange(p => p.Body == uniqueTags, x => x.Post).Select(c => c.Post).ToList();
+                    searchResults = _uow.TagRepository.GetRange(p => p.Body == uniqueTags, x => x.Post.Select(z => z.UserProfile)).Select(x => x.Post).FirstOrDefault().ToList();
                 } 
                 else if(uniqueTags == null)
                 {
-                    var post = _uow.PostRepository.GetRange(p => p.Comment, p => p.UserProfile).Where(x => x.Text.Contains(searchDto.Text)).ToList();
+                    searchResults = _uow.PostRepository.GetRange(p => p.Comment, p => p.UserProfile).Where(x => x.Text.Contains(searchDto.Text)).ToList();
                 }
 
-                
+                List<BlogDto> foundBlogs = mapper.Map<List<BlogDto>>(searchResults);
+
+                return foundBlogs;
+
+
             }
 
             throw new NotImplementedException();
