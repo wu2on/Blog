@@ -1,36 +1,37 @@
 ﻿@using Blog.WEB.Models
 @model IEnumerable<BlogPreviewModel>
 
-    @if (Request.IsAuthenticated)
+@if (Request.IsAuthenticated)
+{
+    foreach (BlogPreviewModel item in Model)
     {
-        foreach (BlogPreviewModel item in Model)
-        {
-            <div class="row">
-                <div class="col-lg">
-                    <div class="thumbnail custom-blog">
-                        <span class="label label-default text-left custom-author">@item.UserEmail</span>
-                        <div class="caption">
-                            <h3 class="text-center custom-blog_title">
-                                @item.Title
-                            </h3>
-                            <p class="custom-blog_preview">
-                                @item.Text
-                            </p>
-                            <div class="text-right">
-                                @Html.ActionLink("Read", "Details", new { id = item.Id }) |
-                                <span class="custom-blog_time">
-                                    @item.CreateAt
-                                </span>
-                            </div>
+        <div class="row">
+            <div class="col-lg">
+                <div class="thumbnail custom-blog">
+                    <span class="label label-default text-left custom-author">@item.UserEmail</span>
+                    <div class="caption">
+                        <h3 class="text-center custom-blog_title">
+                            @item.Title
+                        </h3>
+                        <p class="custom-blog_preview">
+                            @item.Text
+                        </p>
+                        <div class="text-right">
+                            @Html.ActionLink("Read", "Details", new { id = item.Id }) |
+                            <span class="custom-blog_time">
+                                @item.CreateAt
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
-        }
-    }
-    else
-    {
-        <div>
-            Welcome!
         </div>
     }
+}
+else
+{
+    <div class="jumbotron custom-jumbotron">
+        <h1>Welcome to CYBER_<span class="custom-cyber_blog">Blog!</span></h1>
+        <p>  Web community, is a community whose members interact with each other primarily. Members of the community usually share common interests...</p>
+    </div>
+}

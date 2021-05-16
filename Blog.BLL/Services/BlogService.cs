@@ -76,7 +76,7 @@ namespace Blog.BLL.Services
 
         }
 
-        public BlogDto GetDetails(int Id)
+        public BlogDto GetDetails(int? Id)
         {
             MapperConfiguration config = new MapperConfiguration(cfg =>
             {
@@ -140,7 +140,7 @@ namespace Blog.BLL.Services
                 } 
                 else if(uniqueTags == null)
                 {
-                    searchResults = _uow.PostRepository.GetRange(p => p.Comment, p => p.UserProfile).Where(x => x.Text.Contains(searchDto.Text)).ToList();
+                    searchResults = _uow.PostRepository.GetRange(p => p.UserProfile).Where(x => x.Text.Contains(searchDto.Text)).ToList();
                 }
 
                 List<BlogDto> foundBlogs = mapper.Map<List<BlogDto>>(searchResults);
@@ -151,6 +151,20 @@ namespace Blog.BLL.Services
             }
 
             throw new NotImplementedException();
+        }
+        public async Task<OperationDetails> UpdateBlog (BlogDto blogDto)
+        {
+            if (blogDto != null)
+            {
+                var result = _uow.PostRepository.GetFirstOrDefault(x => x.Id == blogDto.Id);
+                result.Title = blogDto.Title;
+                result.Text = blogDto.Text;
+                _uow.PostRepository.Update(result);
+                await _uow.SaveAsync();
+                return new OperationDetails(true, "Blog has been successfully updated", "");
+            }
+
+            return new OperationDetails(false, "Things went wrong...", "");
         }
         public void Dispose()
         {

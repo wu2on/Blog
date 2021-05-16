@@ -56,7 +56,7 @@ namespace Blog.DAL.Repositories
 
         public void Update(TEntity entity)
         {
-            throw new NotImplementedException();
+            Context.Entry<TEntity>(entity).State = EntityState.Modified;
         }
         public IEnumerable<TEntity> GetRange(params Expression<Func<TEntity, object>>[] includeProperties)
         {

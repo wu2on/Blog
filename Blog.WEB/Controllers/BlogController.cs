@@ -11,6 +11,7 @@ using Blog.BLL.Infrastructure;
 using Blog.BLL.Interfaces;
 using System.Threading.Tasks;
 using AutoMapper;
+using System.Net;
 
 namespace Blog.WEB.Controllers
 {
@@ -40,9 +41,20 @@ namespace Blog.WEB.Controllers
         }
 
         // GET: Blog/Details/5
-        public ActionResult Details(int id)
+        public ActionResult Details(int? id)
         {
-            return View();
+            string currentUserId = HttpContext.User.Identity.GetUserId();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+            var blog = BlogService.GetDetails(id);
+            if(currentUserId == blog.UserProfileId)
+            {
+                return View(blog);
+            }
+            return HttpNotFound();
         }
 
         [Authorize]
@@ -104,25 +116,35 @@ namespace Blog.WEB.Controllers
         }
         
         // GET: Blog/Edit/5
-        public ActionResult Edit(int id)
+        public ActionResult Edit(int? id)
         {
-            return View();
+            string currentUserId = HttpContext.User.Identity.GetUserId();
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+
+           BlogDto blog = BlogService.GetDetails(id);
+
+            if (currentUserId == blog.UserProfileId)
+            {
+                return View(blog);
+            }
+            return HttpNotFound();
         }
 
         // POST: Blog/Edit/5
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(BlogDto model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add update logic here
 
-                return RedirectToAction("Index");
+                BlogService.UpdateBlog(model);
+                
             }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index");
         }
 
         // GET: Blog/Delete/5

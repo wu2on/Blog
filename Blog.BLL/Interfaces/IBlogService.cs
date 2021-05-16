@@ -11,7 +11,8 @@ namespace Blog.BLL.Interfaces
         Task<OperationDetails> AddComment(CommentDto commentDto);
         List<BlogDto> GetAllUserBlogs(string Id);
         List<BlogDto> GetAllBlogs();
-        BlogDto GetDetails(int Id);
+        BlogDto GetDetails(int? Id);
+        Task<OperationDetails> UpdateBlog(BlogDto blogDto);
         List<BlogDto> SearchBlogs(SearchDto searchDto);
         void Dispose();
     }
