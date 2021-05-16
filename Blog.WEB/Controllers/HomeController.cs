@@ -35,13 +35,15 @@ namespace Blog.WEB.Controllers
 
             return View(blogs);
         }
-       
+
         public ActionResult Details(int Id)
         {
             var blog  = BlogService.GetDetails(Id);
 
             return View(blog);
         }
+
+        
 
         //public ActionResult Contact()
         //{
