@@ -70,7 +70,7 @@ namespace Blog.WEB.Controllers
 
                 if (claim == null)
                 {
-                    ModelState.AddModelError("", "Неверный логин или пароль.");
+                    ModelState.AddModelError("", "Invalid username or password");
                 }
                 else
                 {

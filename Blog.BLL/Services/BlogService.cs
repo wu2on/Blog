@@ -133,15 +133,15 @@ namespace Blog.BLL.Services
             {
                 string uniqueTags = CheckUniqueTags(searchDto.Text).FirstOrDefault();
 
-                List<Post> searchResults = null;
+                IEnumerable<Post> searchResults = null;
 
                 if(uniqueTags != null)
                 {
-                    searchResults = _uow.TagRepository.GetRange(p => p.Body == uniqueTags, x => x.Post.Select(z => z.UserProfile)).Select(x => x.Post).FirstOrDefault().ToList();
+                    searchResults = _uow.TagRepository.GetRange(p => p.Body == uniqueTags, x => x.Post.Select(z => z.UserProfile)).Select(x => x.Post).FirstOrDefault();
                 } 
                 else if(uniqueTags == null)
                 {
-                    searchResults = _uow.PostRepository.GetRange(p => p.UserProfile).Where(x => x.Text.Contains(searchDto.Text)).ToList();
+                    searchResults = _uow.PostRepository.GetRange(p => p.UserProfile).Where(x => x.Text.Contains(searchDto.Text));
                 }
 
                 List<BlogDto> foundBlogs = mapper.Map<List<BlogDto>>(searchResults);
@@ -173,20 +173,16 @@ namespace Blog.BLL.Services
             if (Id != null)
             {
                 var result = _uow.CommentRepository.GetFirstOrDefault(x => x.Id == Id);
-                if(result.UserProfileId == userId)
-                {
-                    result.IsDeleted = true;
-                    _uow.CommentRepository.Update(result);
-                    await _uow.SaveAsync();
-                    return new OperationDetails(true, "Blog has been successfully updated", "");
-                } else
-                {
-                    return new OperationDetails(false, "No rights to delete", "");
-                }
-                
-            }
 
-            return new OperationDetails(false, "Things went wrong...", "");
+                result.IsDeleted = true;
+                _uow.CommentRepository.Update(result);
+                await _uow.SaveAsync();
+                return new OperationDetails(true, "Blog has been successfully updated", "");
+            }
+            else
+            {
+                return new OperationDetails(false, "Things went wrong...", "");
+            }
         }
 
 

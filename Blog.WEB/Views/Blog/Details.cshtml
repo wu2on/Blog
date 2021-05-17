@@ -8,7 +8,18 @@
             <div class="thumbnail custom-blog custom-animation_border">
                 <span class="label label-default text-left custom-author">@Model.UserProfile.Email</span>
                 <div class="text-right">
-                    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn custom-btn" })
+                    
+                    @using (Html.BeginForm("DeletePost", "Blog", FormMethod.Post))
+                    {
+                    @Html.AntiForgeryToken()
+                    <div class="input-group">
+                        <input type="text" class="hidden" name="Id" value="@Model.Id" />
+                        <span class="input-group-btn">
+                            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary custom-bth" })
+                            <button type="submit" name="url" value="@Request.Url.AbsoluteUri" class="btn btn-danger custom-bth">Detele</button>
+                        </span>
+                    </div>
+                    }
                 </div>
                 <div class="caption">
                     
@@ -61,8 +72,7 @@
                         <input type="text" class="form-control" name="comment" placeholder="Add a comment..." />
                         <input type="text" class="hidden" name="postId" value="@Model.Id" />
                         <span class="input-group-btn">
-
-                            <button type="submit" name="url" value="@Request.Url.AbsoluteUri" class="btn-primary custom-bth">Post</button>
+                            <button type="submit" name="url" value="@Request.Url.AbsoluteUri" class="btn btn-primary custom-bth">Post</button>
                         </span>
                     </div>
                 }

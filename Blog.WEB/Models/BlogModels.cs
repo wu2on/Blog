@@ -23,9 +23,9 @@ namespace Blog.WEB.Models
     }
     public class CreateBlogModel
     {
-        [Required]
+        [Required(ErrorMessage = "Title cannot be empty")]
         public string Title { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Body cannot be empty")]
         public string Text { get; set; }
     }
 }

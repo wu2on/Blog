@@ -4,7 +4,7 @@ namespace Blog.WEB.Models
 {
     public class SearchModel
     {
-        [Required]
+        [Required(ErrorMessage = "Field cannot be empty")]
         public string Text { get; set; }
     }
 }
