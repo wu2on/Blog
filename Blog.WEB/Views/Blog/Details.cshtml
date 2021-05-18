@@ -11,9 +11,10 @@
                     
                     @using (Html.BeginForm("DeletePost", "Blog", FormMethod.Post))
                     {
-                    @Html.AntiForgeryToken()
                     <div class="input-group">
-                        <input type="text" class="hidden" name="Id" value="@Model.Id" />
+                        <div hidden="hidden">
+                            @Html.EditorFor(model => model)
+                        </div>
                         <span class="input-group-btn">
                             @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary custom-bth" })
                             <button type="submit" name="url" value="@Request.Url.AbsoluteUri" class="btn btn-danger custom-bth">Detele</button>
@@ -57,7 +58,7 @@
                                 <div class="input-group">
                                     <input type="text" class="hidden" name="Id" value="@c.Id" />
                                     <span class="input-group-btn">
-                                        <button type="submit" name="url" value="@Request.Url.AbsoluteUri" class="btn-danger custom-bth">Detele</button>
+                                        <button type="submit" name="url" value="@Request.Url.AbsoluteUri" class="btn btn-danger custom-bth">Detele</button>
                                     </span>
                                 </div>
                             }

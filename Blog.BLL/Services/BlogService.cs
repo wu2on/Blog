@@ -116,7 +116,7 @@ namespace Blog.BLL.Services
 
             Mapper mapper = new Mapper(config);
 
-            List<BlogDto> usersBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.GetRange(p => p.UserProfile, c => c.Comment).OrderByDescending(x => x.CreateAt));
+            List<BlogDto> usersBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.GetRange(x => !x.IsDeleted,p => p.UserProfile, c => c.Comment).OrderByDescending(x => x.CreateAt));
             return usersBlogs;
         }
 
@@ -184,7 +184,21 @@ namespace Blog.BLL.Services
                 return new OperationDetails(false, "Things went wrong...", "");
             }
         }
-
+        public async Task<OperationDetails> DeletePost(int Id)
+        {
+            if (Id != null)
+            {
+                var result = _uow.PostRepository.GetFirstOrDefault(x => x.Id == Id);
+                result.IsDeleted = true;
+                _uow.PostRepository.Update(result);
+                await _uow.SaveAsync();
+                return new OperationDetails(true, "Blog has been successfully updated", "");
+            }
+            else
+            {
+                return new OperationDetails(false, "Things went wrong...", "");
+            }
+        }
 
         public void Dispose()
         {

@@ -160,9 +160,18 @@ namespace Blog.WEB.Controllers
             return Redirect(url);
         }
         // GET: Blog/Delete/5
-        public ActionResult Delete(int id)
+        public ActionResult DeletePost(BlogDto model, string url)
         {
-            return View();
+            var currentUser = HttpContext.User.Identity.GetUserId();
+
+            if (model.UserProfileId != currentUser)
+            {
+                return RedirectToAction("Index", "Blog");
+            }
+
+            BlogService.DeletePost(model.Id);
+
+            return RedirectToAction("Index", "Blog");
         }
 
         // POST: Blog/Delete/5
