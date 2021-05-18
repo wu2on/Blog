@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity;
+using AutoMapper;
+using System;
 
 namespace Blog.BLL.Services
 {
@@ -51,6 +53,23 @@ namespace Blog.BLL.Services
             if (user != null)
                 claim = await _uow.UserManager.CreateIdentityAsync(user, DefaultAuthenticationTypes.ApplicationCookie);
             return claim;
+        }
+
+        public UserDto GetUser(string Id)
+        {
+             MapperConfiguration config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<UserProfile, UserDto>();
+            });
+
+            Mapper mapper = new Mapper(config);
+
+            string role = _uow.UserManager.GetRoles(Id).FirstOrDefault();
+            UserDto user = mapper.Map<UserDto>(_uow.UserProfileRepository.GetFirstOrDefault(x => x.Id == Id));
+
+            user.Role = role;
+
+            return user;
         }
 
         public async Task SetInitialData(UserDto adminDto, List<string> roles)

@@ -120,6 +120,7 @@
 }
 
 .control-label {
+    padding: 6px;
     font-size: 14px;
     color: #fff;
 }
@@ -143,4 +144,9 @@
 
 .tag {
     color: #ff9a03;
+}
+
+.custom-password {
+    border: 0px;
+    background-color: #372963;
 }

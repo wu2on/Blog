@@ -1,4 +1,7 @@
-﻿using Blog.BLL.Interfaces;
+﻿using AutoMapper;
+using Blog.BLL.Dto;
+using Blog.BLL.Interfaces;
+using Blog.WEB.Models;
 using Microsoft.AspNet.Identity;
 using System.Web.Mvc;
 
@@ -12,12 +15,21 @@ namespace Blog.WEB.Controllers
         {
             UserService = service;
         }
-
+        [Authorize]
         public ActionResult Index()
         {
             string currentUserId = HttpContext.User.Identity.GetUserId();
 
-            return View();
+            MapperConfiguration config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<UserDto, ViewUserModel>();
+            });
+
+            Mapper mapper = new Mapper(config);
+
+            ViewUserModel user = mapper.Map<ViewUserModel>(UserService.GetUser(currentUserId));
+
+            return View(user);
         }
 
         // GET: Manage/Details/5

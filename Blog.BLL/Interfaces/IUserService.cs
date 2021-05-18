@@ -10,6 +10,7 @@ namespace Blog.BLL.Interfaces
     {
         Task<OperationDetails> Create(UserDto userDto);
         Task<ClaimsIdentity> Authenticate(UserDto userDto);
+        UserDto GetUser(string Id);
         Task SetInitialData(UserDto adminDto, List<string> roles);
         void Dispose();
     }
