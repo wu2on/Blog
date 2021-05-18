@@ -43,12 +43,19 @@ namespace Blog.WEB.Controllers
                     IsDeleted = false
                     
                 };
+
                 OperationDetails operationDetails = await UserService.Create(userDto);
+
                 if (operationDetails.Succedeed)
+                {
                     return View("SuccessRegister");
+                }
                 else
+                {
                     ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
+                }  
             }
+
             return View(model);
         }
 
@@ -82,6 +89,7 @@ namespace Blog.WEB.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
+
             return View(model);
         }
 

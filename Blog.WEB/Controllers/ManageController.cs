@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
 using Blog.BLL.Dto;
+using Blog.BLL.Infrastructure;
 using Blog.BLL.Interfaces;
 using Blog.WEB.Models;
 using Microsoft.AspNet.Identity;
+using System;
+using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace Blog.WEB.Controllers
@@ -16,9 +20,9 @@ namespace Blog.WEB.Controllers
             UserService = service;
         }
         [Authorize]
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            string currentUserId = HttpContext.User.Identity.GetUserId();
+            string currentUserId = User.Identity.GetUserId();
 
             MapperConfiguration config = new MapperConfiguration(cfg =>
             {
@@ -27,81 +31,36 @@ namespace Blog.WEB.Controllers
 
             Mapper mapper = new Mapper(config);
 
-            ViewUserModel user = mapper.Map<ViewUserModel>(UserService.GetUser(currentUserId));
+            ViewUserModel user = mapper.Map<ViewUserModel>(await UserService.GetUserAsync(currentUserId));
 
             return View(user);
         }
-
-        // GET: Manage/Details/5
-        public ActionResult Details(int id)
+        public ActionResult ChangePassword()
         {
             return View();
         }
 
-        // GET: Manage/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Manage/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
-            try
+            if (ModelState.IsValid)
             {
-                // TODO: Add insert logic here
+                ChangedPasswordDto password = new ChangedPasswordDto 
+                {
+                    UserId = User.Identity.GetUserId(),
+                    NewPassword = model.NewPassword,
+                    OldPassword = model.OldPassword
+                };
 
-                return RedirectToAction("Index");
+                OperationDetails operationDetails = await UserService.ChangePasswordAsync(password);
+
+                if(operationDetails.Succedeed) return View("SuccessChangePassword");
+
+                ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
             }
-            catch
-            {
-                return View();
-            }
-        }
 
-        // GET: Manage/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: Manage/Edit/5
-        [HttpPost]
-        public ActionResult Edit(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add update logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: Manage/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: Manage/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
-            {
-                // TODO: Add delete logic here
-
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return View(model);
         }
     }
 }

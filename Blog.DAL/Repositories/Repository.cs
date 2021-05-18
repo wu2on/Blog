@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Blog.DAL.Repositories
 {
@@ -37,7 +38,7 @@ namespace Blog.DAL.Repositories
             TEntity entity = DbSet.FirstOrDefault(e => e.Id.Equals(id));
         }
 
-        public TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> predicate)
+        public Task<TEntity> GetFirstOrDefault(Expression<Func<TEntity, bool>> predicate)
         {
             IQueryable<TEntity> query = DbSet;
 
@@ -46,7 +47,7 @@ namespace Blog.DAL.Repositories
                 query = query.Where(predicate);
             }
 
-            return query.FirstOrDefault();
+            return query.FirstOrDefaultAsync();
         }
 
         public IEnumerable<TEntity> GetAll()

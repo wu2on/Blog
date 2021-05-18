@@ -32,7 +32,7 @@ namespace Blog.BLL.Services
                 {
                     foreach (string tag in uniqueTags)
                     {
-                        Tag result = _uow.TagRepository.GetFirstOrDefault(x => x.Body == tag);
+                        Tag result = await _uow.TagRepository.GetFirstOrDefault(x => x.Body == tag);
 
                         if (result == null)
                         {
@@ -157,7 +157,7 @@ namespace Blog.BLL.Services
         {
             if (blogDto != null)
             {
-                var result = _uow.PostRepository.GetFirstOrDefault(x => x.Id == blogDto.Id);
+                var result = await _uow.PostRepository.GetFirstOrDefault(x => x.Id == blogDto.Id);
                 result.Title = blogDto.Title;
                 result.Text = blogDto.Text;
                 _uow.PostRepository.Update(result);
@@ -172,7 +172,7 @@ namespace Blog.BLL.Services
         {
             if (Id != null)
             {
-                var result = _uow.CommentRepository.GetFirstOrDefault(x => x.Id == Id);
+                var result = await _uow.CommentRepository.GetFirstOrDefault(x => x.Id == Id);
 
                 result.IsDeleted = true;
                 _uow.CommentRepository.Update(result);
@@ -181,14 +181,14 @@ namespace Blog.BLL.Services
             }
             else
             {
-                return new OperationDetails(false, "Things went wrong...", "");
+                return new OperationDetails(false, "Things went wrong...", "Blog");
             }
         }
         public async Task<OperationDetails> DeletePost(int Id)
         {
             if (Id != null)
             {
-                var result = _uow.PostRepository.GetFirstOrDefault(x => x.Id == Id);
+                var result = await _uow.PostRepository.GetFirstOrDefault(x => x.Id == Id);
                 result.IsDeleted = true;
                 _uow.PostRepository.Update(result);
                 await _uow.SaveAsync();

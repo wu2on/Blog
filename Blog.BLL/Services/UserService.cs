@@ -27,9 +27,13 @@ namespace Blog.BLL.Services
             if (user == null)
             {
                 user = new User { Email = userDto.Email, UserName = userDto.Email };
+
                 var result = await _uow.UserManager.CreateAsync(user, userDto.Password);
+
                 if (result.Errors.Count() > 0)
+                {
                     return new OperationDetails(false, result.Errors.FirstOrDefault(), "");
+                }
 
                 await _uow.UserManager.AddToRoleAsync(user.Id, userDto.Role);
 
@@ -55,7 +59,7 @@ namespace Blog.BLL.Services
             return claim;
         }
 
-        public UserDto GetUser(string Id)
+        public async Task<UserDto> GetUserAsync(string Id)
         {
              MapperConfiguration config = new MapperConfiguration(cfg =>
             {
@@ -65,12 +69,26 @@ namespace Blog.BLL.Services
             Mapper mapper = new Mapper(config);
 
             string role = _uow.UserManager.GetRoles(Id).FirstOrDefault();
-            UserDto user = mapper.Map<UserDto>(_uow.UserProfileRepository.GetFirstOrDefault(x => x.Id == Id));
+            UserDto user = mapper.Map<UserDto>(await _uow.UserProfileRepository.GetFirstOrDefault(x => x.Id == Id));
 
             user.Role = role;
 
             return user;
         }
+
+        public async Task<OperationDetails> ChangePasswordAsync(ChangedPasswordDto password)
+        {
+            var result = _uow.UserManager.ChangePasswordAsync(password.UserId, password.OldPassword, password.NewPassword);
+
+            if(result.Result.Succeeded)
+            {
+                return new OperationDetails(true, "Password changed successfully", "");
+            }
+
+            return new OperationDetails(false, result.Result.Errors.FirstOrDefault(), "Password");
+        }
+
+        
 
         public async Task SetInitialData(UserDto adminDto, List<string> roles)
         {
