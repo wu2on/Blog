@@ -24,6 +24,7 @@ namespace Blog.WEB.Controllers
             BlogService = service;
         }
 
+        [Authorize]
         public ActionResult Index()
         {
             string currentUserId = HttpContext.User.Identity.GetUserId();
@@ -40,7 +41,7 @@ namespace Blog.WEB.Controllers
             return View(blogs);
         }
 
-        // GET: Blog/Details/5
+        [Authorize]
         public ActionResult Details(int? id)
         {
             string currentUserId = HttpContext.User.Identity.GetUserId();
@@ -49,7 +50,8 @@ namespace Blog.WEB.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            var blog = BlogService.GetDetails(id);
+            BlogDto blog = BlogService.GetDetails(id);
+
             if(currentUserId == blog.UserProfileId)
             {
                 return View(blog);
@@ -71,7 +73,7 @@ namespace Blog.WEB.Controllers
         {
             if(ModelState.IsValid)
             {
-                string currentUserId = HttpContext.User.Identity.GetUserId();
+                string currentUserId = User.Identity.GetUserId();
 
                 BlogDto blogDto = new BlogDto
                 {
@@ -83,14 +85,20 @@ namespace Blog.WEB.Controllers
                 };
 
                 OperationDetails operationDetails = await BlogService.Create(blogDto);
+
                 if (operationDetails.Succedeed)
+                {
                     return RedirectToAction("Index", "Blog");
+                }
                 else
+                {
                     ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
+                }    
             }
             
             return View();
         }
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -98,7 +106,7 @@ namespace Blog.WEB.Controllers
         {
             if(ModelState.IsValid)
             {
-                var currentUser = HttpContext.User.Identity;
+                var currentUser = User.Identity;
 
                 CommentDto commentDto = new CommentDto
                 {
@@ -109,16 +117,18 @@ namespace Blog.WEB.Controllers
                     PostId = Int32.Parse(postId),
                     IsDeleted = false
                 };
+
                 await BlogService.AddComment(commentDto);
             }
 
             return Redirect(url);
         }
         
-        // GET: Blog/Edit/5
+        [Authorize]
         public ActionResult Edit(int? id)
         {
-            string currentUserId = HttpContext.User.Identity.GetUserId();
+            string currentUserId = User.Identity.GetUserId();
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -130,64 +140,63 @@ namespace Blog.WEB.Controllers
             {
                 return View(blog);
             }
+
             return HttpNotFound();
         }
 
-        // POST: Blog/Edit/5
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(BlogDto model)
+        public async Task<ActionResult> Edit(BlogDto model)
         {
             if (ModelState.IsValid)
             {
 
-                BlogService.UpdateBlog(model);
-                
+                OperationDetails operationDetails = await BlogService.UpdateBlog(model);
+
+                if (!operationDetails.Succedeed)
+                {
+                    ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
+                }
+
             }
+
             return RedirectToAction("Index");
         }
 
+        [Authorize]
         [HttpPost]
-        public ActionResult DeleteComment(int? Id, string url)
+        public async Task<ActionResult> DeleteComment(int? Id, string url)
         {
             if(ModelState.IsValid)
             {
-                var currentUser = HttpContext.User.Identity.GetUserId();
+                var currentUser = User.Identity.GetUserId();
 
-                BlogService.DeleteComment(Id, currentUser);
+                OperationDetails operationDetails = await BlogService.DeleteComment(Id, currentUser);
             }
 
             return Redirect(url);
         }
-        // GET: Blog/Delete/5
-        public ActionResult DeletePost(BlogDto model, string url)
+       
+        [Authorize]
+        [HttpPost]
+        public async Task<ActionResult> DeletePost(BlogDto model, string url)
         {
-            var currentUser = HttpContext.User.Identity.GetUserId();
+            var currentUser = User.Identity.GetUserId();
 
             if (model.UserProfileId != currentUser)
             {
                 return RedirectToAction("Index", "Blog");
             }
 
-            BlogService.DeletePost(model.Id);
+            OperationDetails operationDetails = await BlogService.DeletePost(model.Id);
 
-            return RedirectToAction("Index", "Blog");
-        }
-
-        // POST: Blog/Delete/5
-        [HttpPost]
-        public ActionResult Delete(int id, FormCollection collection)
-        {
-            try
+            if (!operationDetails.Succedeed)
             {
-                // TODO: Add delete logic here
+                ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
+            }
 
-                return RedirectToAction("Index");
-            }
-            catch
-            {
-                return View();
-            }
+            return RedirectToAction("Index", "Blog"); 
         }
     }
 }

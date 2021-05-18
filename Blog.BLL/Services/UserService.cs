@@ -69,6 +69,7 @@ namespace Blog.BLL.Services
             Mapper mapper = new Mapper(config);
 
             string role = _uow.UserManager.GetRoles(Id).FirstOrDefault();
+
             UserDto user = mapper.Map<UserDto>(await _uow.UserProfileRepository.GetFirstOrDefault(x => x.Id == Id));
 
             user.Role = role;
