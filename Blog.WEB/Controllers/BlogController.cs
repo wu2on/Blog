@@ -52,7 +52,9 @@ namespace Blog.WEB.Controllers
 
             BlogDto blog = BlogService.GetDetails(id);
 
-            if(currentUserId == blog.UserProfileId)
+            if(blog == null) return HttpNotFound();
+
+            if (currentUserId == blog.UserProfileId)
             {
                 return View(blog);
             }
@@ -73,7 +75,7 @@ namespace Blog.WEB.Controllers
         {
             if(ModelState.IsValid)
             {
-                string currentUserId = User.Identity.GetUserId();
+                string currentUserId = HttpContext.User.Identity.GetUserId();
 
                 BlogDto blogDto = new BlogDto
                 {
@@ -84,7 +86,7 @@ namespace Blog.WEB.Controllers
                     IsDeleted = false
                 };
 
-                OperationDetails operationDetails = await BlogService.Create(blogDto);
+                OperationDetails operationDetails = BlogService.Create(blogDto);
 
                 if (operationDetails.Succedeed)
                 {
@@ -93,7 +95,8 @@ namespace Blog.WEB.Controllers
                 else
                 {
                     ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
-                }    
+                }
+
             }
             
             return View();

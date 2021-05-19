@@ -38,7 +38,18 @@ namespace Blog.DAL.Repositories
             TEntity entity = DbSet.FirstOrDefault(e => e.Id.Equals(id));
         }
 
-        public Task<TEntity> GetFirstOrDefault(Expression<Func<TEntity, bool>> predicate)
+        public TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> predicate)
+        {
+            IQueryable<TEntity> query = DbSet;
+
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            return query.FirstOrDefault();
+        }
+        public Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
         {
             IQueryable<TEntity> query = DbSet;
 

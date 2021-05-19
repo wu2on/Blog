@@ -20,7 +20,7 @@ namespace Blog.BLL.Services
         {
             _uow = uow;
         }
-        public async Task<OperationDetails> Create(BlogDto blogDto)
+        public OperationDetails Create(BlogDto blogDto)
         {
             if (blogDto != null)
             {
@@ -28,11 +28,11 @@ namespace Blog.BLL.Services
                 
                 IEnumerable<string> uniqueTags = CheckUniqueTags(blogDto.Text);
 
-                if(uniqueTags != null)
+                if(uniqueTags.Any())
                 {
                     foreach (string tag in uniqueTags)
                     {
-                        Tag result = await _uow.TagRepository.GetFirstOrDefault(x => x.Body == tag);
+                        Tag result = _uow.TagRepository.GetFirstOrDefault(x => x.Body == tag);
 
                         if (result == null)
                         {
@@ -49,7 +49,7 @@ namespace Blog.BLL.Services
 
                 Post createdPost = _uow.PostRepository.Create(post);
 
-                await _uow.SaveAsync();
+                _uow.SaveAsync();
 
                 return new OperationDetails(true, "Blog has been successfully created", "");
             }
@@ -161,7 +161,7 @@ namespace Blog.BLL.Services
         {
             if (blogDto != null)
             {
-                var result = await _uow.PostRepository.GetFirstOrDefault(x => x.Id == blogDto.Id);
+                var result = await _uow.PostRepository.GetFirstOrDefaultAsync(x => x.Id == blogDto.Id);
                 result.Title = blogDto.Title;
                 result.Text = blogDto.Text;
                 _uow.PostRepository.Update(result);
@@ -176,7 +176,7 @@ namespace Blog.BLL.Services
         {
             if (Id != null)
             {
-                var result = await _uow.CommentRepository.GetFirstOrDefault(x => x.Id == Id);
+                var result = await _uow.CommentRepository.GetFirstOrDefaultAsync(x => x.Id == Id);
 
                 result.IsDeleted = true;
                 _uow.CommentRepository.Update(result);
@@ -192,7 +192,7 @@ namespace Blog.BLL.Services
         {
             if (Id != null)
             {
-                var result = await _uow.PostRepository.GetFirstOrDefault(x => x.Id == Id);
+                var result = await _uow.PostRepository.GetFirstOrDefaultAsync(x => x.Id == Id);
                 result.IsDeleted = true;
                 _uow.PostRepository.Update(result);
                 await _uow.SaveAsync();

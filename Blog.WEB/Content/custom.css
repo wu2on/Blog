@@ -1,4 +1,12 @@
-﻿.custom-color {
+﻿body {
+    background-color: #372963;
+}
+.container {
+    height: 100vh;
+    padding-top: 125px;
+}
+
+.custom-color {
     background-color: #261d45;
 }
 
