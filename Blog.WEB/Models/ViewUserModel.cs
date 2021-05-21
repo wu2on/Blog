@@ -1,7 +1,5 @@
-﻿using System;
+﻿using Blog.BLL.Dto;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Blog.WEB.Models
 {
@@ -12,6 +10,6 @@ namespace Blog.WEB.Models
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Role { get; set; }
-        
+        public  List<UserDto> Users { get; set; } 
     }
 }

@@ -1,0 +1,48 @@
+﻿@using Blog.BLL.Dto
+@model List<UserDto>
+
+@if (HttpContext.Current.User.IsInRole("admin"))
+{
+    <h2 class="custom-title">Admin panel</h2>
+    <h2 class="custom-cyber">Amout of users on cyber_blog: [ <span style="color: #00ebb8">@Model.Count</span> ]</h2>
+
+    <table class="table">
+        <tr>
+            <th class="control-label">
+                Email
+            </th>
+            <th class="control-label">
+                First Name
+            </th>
+            <th class="control-label">
+                Last Name
+            </th>
+            <th class="control-label">
+               Role
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="form-control">
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td class="custom-cyber">
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td class="custom-cyber">
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td class="form-control">
+                    @Html.DisplayFor(modelItem => item.Role)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "ChangeUser", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
+    </table>
+}

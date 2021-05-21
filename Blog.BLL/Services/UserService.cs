@@ -48,6 +48,29 @@ namespace Blog.BLL.Services
                 return new OperationDetails(false, "User with this login already exists", "Email");
             }
         }
+        public async Task<OperationDetails> UpdateUserData(UserDto userDto)
+        {
+            var user = _uow.UserProfileRepository.GetFirstOrDefault(x => x.Id == userDto.Id);
+            string role = _uow.UserManager.GetRoles(userDto.Id).FirstOrDefault();
+
+            if (user != null)
+            {
+                if(userDto.Role != role || role == null)
+                {
+                    if(role != null) _uow.UserManager.RemoveFromRole(user.Id, role);
+                    _uow.UserManager.AddToRole(user.Id, userDto.Role);
+                }
+                user.FirstName = userDto.FirstName;
+                user.LastName = userDto.LastName;
+                _uow.UserProfileRepository.Update(user);
+
+                await _uow.SaveAsync();
+
+                return new OperationDetails(true, "Profile has been successfully updated", "");
+            }
+
+            return new OperationDetails(false, "Profile hasn't been updated", "profile");
+        }
 
         public async Task<ClaimsIdentity> Authenticate(UserDto userDto)
         {
@@ -89,7 +112,19 @@ namespace Blog.BLL.Services
             return new OperationDetails(false, result.Result.Errors.FirstOrDefault(), "Password");
         }
 
-        
+        public List<UserDto> GetAllUsers()
+        {
+            MapperConfiguration config = new MapperConfiguration(cfg =>
+            {
+                cfg.CreateMap<UserProfile, UserDto>().ForMember(dest => dest.Role, opt => opt.MapFrom(src => _uow.UserManager.GetRoles(src.Id).FirstOrDefault()));
+            });
+
+            Mapper mapper = new Mapper(config);
+
+            List<UserDto> users = mapper.Map<List<UserDto>>(_uow.UserProfileRepository.GetAll());
+
+            return users;
+        }
 
         public async Task SetInitialData(UserDto adminDto, List<string> roles)
         {

@@ -239,6 +239,8 @@
     <Content Include="Views\Manage\ChangePassword.cshtml" />
     <Content Include="Views\Manage\SuccessChangePassword.cshtml" />
     <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Manage\_Partial.cshtml" />
+    <Content Include="Views\Manage\ChangeUser.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

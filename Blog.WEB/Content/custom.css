@@ -162,3 +162,8 @@
 .btn-danger, .btn-primary {
     background-color: inherit;
 }
+
+td {
+    border-top: 0px !important;
+
+}

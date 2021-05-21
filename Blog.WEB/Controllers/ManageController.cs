@@ -5,6 +5,7 @@ using Blog.BLL.Interfaces;
 using Blog.WEB.Models;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
@@ -33,6 +34,15 @@ namespace Blog.WEB.Controllers
 
             ViewUserModel user = mapper.Map<ViewUserModel>(await UserService.GetUserAsync(currentUserId));
 
+            if(User.IsInRole("admin"))
+            {
+                List<UserDto> result = UserService.GetAllUsers();
+
+                user.Users = result;
+
+                return View(user);
+            } 
+
             return View(user);
         }
         public ActionResult ChangePassword()
@@ -42,6 +52,7 @@ namespace Blog.WEB.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<ActionResult> ChangePassword(ChangePasswordViewModel model)
         {
             if (ModelState.IsValid)
@@ -61,6 +72,38 @@ namespace Blog.WEB.Controllers
             }
 
             return View(model);
+        }
+
+        [Authorize(Roles = "admin")]
+        public async Task<ActionResult> ChangeUser(string Id)
+        {
+            bool isAdmin = User.IsInRole("admin");
+
+            if(isAdmin)
+            {
+                UserDto user = await UserService.GetUserAsync(Id);
+                return View(user);
+            }
+            
+            return View();
+        }
+
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> ChangeUser(UserDto user)
+        {
+            bool isAdmin = User.IsInRole("admin");
+
+            if (isAdmin)
+            {
+                var result = UserService.UpdateUserData(user);
+                var updatedUser = await UserService.GetUserAsync(user.Id);
+
+                return View(updatedUser);
+            }
+
+            return View();
         }
     }
 }

@@ -1,6 +1,6 @@
 ﻿@model Blog.WEB.Models.ViewUserModel
 
-<div>
+<div class="row">
     <h4 class="custom-title">Account Setting</h4>
     <dl class="dl-horizontal col-lg-4 col-md-4 col-sm-6">
         <dt class="control-label">
@@ -42,8 +42,11 @@
             [@Html.ActionLink("Change account password", "ChangePassword")]
         </dd>
     </dl>
+    
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @if (User.IsInRole("admin"))
+    {
+        @Html.Partial("_Partial", Model.Users)
+    }
 </p>
