@@ -1,7 +1,8 @@
-﻿using Blog.BLL.Dto;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
+using Blog.BLL.Dto;
 
 namespace Blog.WEB.Models
 {
@@ -23,9 +24,9 @@ namespace Blog.WEB.Models
     }
     public class CreateBlogModel
     {
-        [Required]
+        [Required(ErrorMessage = "Title cannot be empty")]
         public string Title { get; set; }
-        [Required]
+        [Required(ErrorMessage = "Body cannot be empty")]
         public string Text { get; set; }
     }
 }

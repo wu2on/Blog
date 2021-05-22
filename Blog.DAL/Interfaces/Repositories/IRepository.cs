@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Blog.DAL.Interfaces.Repositories
 {
@@ -10,6 +11,7 @@ namespace Blog.DAL.Interfaces.Repositories
     {
         IEnumerable<TEntity> GetAll();
         TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
         TEntity Create(TEntity entity);
         void CreateMany(ICollection<TEntity> entities);
         void Update(TEntity entity);

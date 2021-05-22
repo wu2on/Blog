@@ -1,68 +1,52 @@
-﻿@model Blog.BLL.Dto.UserDto
+﻿@model Blog.WEB.Models.ViewUserModel
 
-<div>
-    <h4>UserDto</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Email)
+<div class="row">
+    <h4 class="custom-title">Account Setting</h4>
+    <dl class="dl-horizontal col-lg-4 col-md-4 col-sm-6">
+        <dt class="control-label">
+            @Html.DisplayNameFor(model => model.Email):
         </dt>
 
-        <dd>
+        <dd class="form-control">
             @Html.DisplayFor(model => model.Email)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Password)
+        <dt class="control-label">
+            @Html.DisplayNameFor(model => model.FirstName):
         </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Password)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-
-        <dd>
+        <dd class="form-control">
             @Html.DisplayFor(model => model.FirstName)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.LastName)
+        <dt class="control-label">
+            @Html.DisplayNameFor(model => model.LastName):
         </dt>
 
-        <dd>
+        <dd class="form-control">
             @Html.DisplayFor(model => model.LastName)
         </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.CreateAt)
+        <dt class="control-label">
+            @Html.DisplayNameFor(model => model.Role):
         </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.CreateAt)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Role)
-        </dt>
-
-        <dd>
+        <dd class="form-control">
             @Html.DisplayFor(model => model.Role)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.IsDeleted)
+        <dt class="control-label">
+            Password:
         </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.IsDeleted)
+        <dd class="form-control custom-password">
+            [@Html.ActionLink("Change account password", "ChangePassword")]
         </dd>
-
     </dl>
+    
 </div>
 <p>
-    @*@Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |*@
-    @Html.ActionLink("Back to List", "Index")
+    @if (User.IsInRole("admin"))
+    {
+        @Html.Partial("_Partial", Model.Users)
+    }
 </p>

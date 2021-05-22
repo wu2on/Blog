@@ -1,14 +1,14 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
 using Blog.BLL.Dto;
 using Blog.BLL.Infrastructure;
 using Blog.BLL.Interfaces;
 using Blog.DAL.Entities;
 using Blog.DAL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace Blog.BLL.Services
 {
@@ -20,7 +20,7 @@ namespace Blog.BLL.Services
         {
             _uow = uow;
         }
-        public async Task<OperationDetails> Create(BlogDto blogDto)
+        public OperationDetails Create(BlogDto blogDto)
         {
             if (blogDto != null)
             {
@@ -28,7 +28,7 @@ namespace Blog.BLL.Services
                 
                 IEnumerable<string> uniqueTags = CheckUniqueTags(blogDto.Text);
 
-                if(uniqueTags != null)
+                if(uniqueTags.Any())
                 {
                     foreach (string tag in uniqueTags)
                     {
@@ -49,12 +49,13 @@ namespace Blog.BLL.Services
 
                 Post createdPost = _uow.PostRepository.Create(post);
 
-                await _uow.SaveAsync();
+                _uow.SaveAsync();
+
                 return new OperationDetails(true, "Blog has been successfully created", "");
             }
             else
             {
-                return new OperationDetails(false, "Things went wrong... maybe blog is empty", "");
+                return new OperationDetails(false, "Blog is empty", "Tag");
             }
 
         }
@@ -66,12 +67,14 @@ namespace Blog.BLL.Services
                 Comment comment = new Comment { Text = commentDto.Text, PostId = commentDto.PostId, IsDeleted = commentDto.IsDeleted, CreateAt = commentDto.CreateAt, UserProfileId = commentDto.UserProfileId, UserEmail = commentDto.UserEmail };
 
                 Comment create = _uow.CommentRepository.Create(comment);
+
                 await _uow.SaveAsync();
+
                 return new OperationDetails(true, "Comment has been successfully created", "");
             }
             else
             {
-                return new OperationDetails(false, "Things went wrong... maybe blog is empty", "");
+                return new OperationDetails(false, "Comment is empty", "Comment");
             }
 
         }
@@ -101,7 +104,9 @@ namespace Blog.BLL.Services
             });
 
             Mapper mapper = new Mapper(config);
+
             List<BlogDto> userBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.GetRange(x => x.UserProfileId == Id && !x.IsDeleted, p => p.UserProfile, c => c.Comment).OrderByDescending(x => x.CreateAt));
+
             return userBlogs;
         }
 
@@ -116,7 +121,7 @@ namespace Blog.BLL.Services
 
             Mapper mapper = new Mapper(config);
 
-            List<BlogDto> usersBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.GetRange(p => p.UserProfile, c => c.Comment).OrderByDescending(x => x.CreateAt));
+            List<BlogDto> usersBlogs = mapper.Map<List<BlogDto>>(_uow.PostRepository.GetRange(x => !x.IsDeleted,p => p.UserProfile, c => c.Comment).OrderByDescending(x => x.CreateAt));
             return usersBlogs;
         }
 
@@ -129,35 +134,34 @@ namespace Blog.BLL.Services
             });
 
             Mapper mapper = new Mapper(config);
+
             if (searchDto != null)
             {
                 string uniqueTags = CheckUniqueTags(searchDto.Text).FirstOrDefault();
 
-                List<Post> searchResults = null;
+                IEnumerable<Post> searchResults = null;
 
                 if(uniqueTags != null)
                 {
-                    searchResults = _uow.TagRepository.GetRange(p => p.Body == uniqueTags, x => x.Post.Select(z => z.UserProfile)).Select(x => x.Post).FirstOrDefault().ToList();
+                    searchResults = _uow.TagRepository.GetRange(p => p.Body == uniqueTags, x => x.Post.Select(z => z.UserProfile)).Select(x => x.Post).FirstOrDefault().Where(x => !x.IsDeleted);
                 } 
                 else if(uniqueTags == null)
                 {
-                    searchResults = _uow.PostRepository.GetRange(p => p.UserProfile).Where(x => x.Text.Contains(searchDto.Text)).ToList();
+                    searchResults = _uow.PostRepository.GetRange(x => !x.IsDeleted, p => p.UserProfile).Where(x => x.Text.Contains(searchDto.Text));
                 }
 
                 List<BlogDto> foundBlogs = mapper.Map<List<BlogDto>>(searchResults);
 
                 return foundBlogs;
-
-
             }
 
-            throw new NotImplementedException();
+            return new List<BlogDto>();
         }
         public async Task<OperationDetails> UpdateBlog (BlogDto blogDto)
         {
             if (blogDto != null)
             {
-                var result = _uow.PostRepository.GetFirstOrDefault(x => x.Id == blogDto.Id);
+                var result = await _uow.PostRepository.GetFirstOrDefaultAsync(x => x.Id == blogDto.Id);
                 result.Title = blogDto.Title;
                 result.Text = blogDto.Text;
                 _uow.PostRepository.Update(result);
@@ -165,30 +169,40 @@ namespace Blog.BLL.Services
                 return new OperationDetails(true, "Blog has been successfully updated", "");
             }
 
-            return new OperationDetails(false, "Things went wrong...", "");
+            return new OperationDetails(false, "Blog is empty", "Updated Blog");
         }
         
         public async Task<OperationDetails> DeleteComment(int? Id, string userId)
         {
             if (Id != null)
             {
-                var result = _uow.CommentRepository.GetFirstOrDefault(x => x.Id == Id);
-                if(result.UserProfileId == userId)
-                {
-                    result.IsDeleted = true;
-                    _uow.CommentRepository.Update(result);
-                    await _uow.SaveAsync();
-                    return new OperationDetails(true, "Blog has been successfully updated", "");
-                } else
-                {
-                    return new OperationDetails(false, "No rights to delete", "");
-                }
-                
+                var result = await _uow.CommentRepository.GetFirstOrDefaultAsync(x => x.Id == Id);
+
+                result.IsDeleted = true;
+                _uow.CommentRepository.Update(result);
+                await _uow.SaveAsync();
+                return new OperationDetails(true, "Comment has been successfully deleted", "");
             }
-
-            return new OperationDetails(false, "Things went wrong...", "");
+            else
+            {
+                return new OperationDetails(false, "Things went wrong...", "Delete comment");
+            }
         }
-
+        public async Task<OperationDetails> DeletePost(int Id)
+        {
+            if (Id != null)
+            {
+                var result = await _uow.PostRepository.GetFirstOrDefaultAsync(x => x.Id == Id);
+                result.IsDeleted = true;
+                _uow.PostRepository.Update(result);
+                await _uow.SaveAsync();
+                return new OperationDetails(true, "Post has been successfully deleted", "");
+            }
+            else
+            {
+                return new OperationDetails(false, "Things went wrong...", "Delete post");
+            }
+        }
 
         public void Dispose()
         {

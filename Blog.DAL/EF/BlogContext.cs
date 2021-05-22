@@ -1,7 +1,10 @@
 ﻿using System.Data.Entity;
-using Microsoft.AspNet.Identity.EntityFramework;
-using Blog.DAL.Entities;
 using System.Data.Entity.Infrastructure;
+
+using Blog.DAL.Entities;
+using Microsoft.AspNet.Identity.EntityFramework;
+
+
 
 namespace Blog.DAL.EF
 {

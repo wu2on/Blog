@@ -1,6 +1,7 @@
-﻿using Blog.DAL.Entities;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+
+using Blog.DAL.Entities;
 
 namespace Blog.DAL.Identity
 {

@@ -1,7 +1,8 @@
-﻿using Blog.DAL.Interfaces.Entities;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+
+using Blog.DAL.Interfaces.Entities;
 
 namespace Blog.DAL.Entities
 {
