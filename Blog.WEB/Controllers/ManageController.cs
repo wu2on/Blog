@@ -1,25 +1,43 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+
 using Blog.BLL.Dto;
 using Blog.BLL.Infrastructure;
 using Blog.BLL.Interfaces;
 using Blog.WEB.Models;
-using Microsoft.AspNet.Identity;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
+using AutoMapper;
+
+
 
 namespace Blog.WEB.Controllers
 {
+    /// <summary>
+    /// Controller to manage user credentials
+    /// </summary>
     public class ManageController : Controller
     {
+        /// <summary>
+        /// The Users Service service
+        /// </summary>
         private IUserService UserService;
 
+        /// <summary>
+        /// Initializes a new instance of the ManageController
+        /// </summary>
+        /// <param name="service">
+        /// Users service
+        /// </param>
         public ManageController(IUserService service)
         {
             UserService = service;
         }
+
+        /// <summary>
+        /// Show user personal data
+        /// </summary>
+        /// <returns>Action result</returns>
         [Authorize]
         public async Task<ActionResult> Index()
         {
@@ -45,11 +63,22 @@ namespace Blog.WEB.Controllers
 
             return View(user);
         }
+
+        /// <summary>
+        /// Change password view
+        /// </summary>
+        /// <returns>Action result</returns>
+        [Authorize]
         public ActionResult ChangePassword()
         {
             return View();
         }
 
+        /// <summary>
+        /// Change user password
+        /// </summary>
+        /// <param name="model">Requst from user to change password</param>
+        /// <returns></returns>
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
@@ -74,6 +103,11 @@ namespace Blog.WEB.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// Change user View
+        /// </summary>
+        /// <param name="Id">User identifier</param>
+        /// <returns>ActionResult</returns>
         [Authorize(Roles = "admin")]
         public async Task<ActionResult> ChangeUser(string Id)
         {
@@ -88,6 +122,11 @@ namespace Blog.WEB.Controllers
             return View();
         }
 
+        /// <summary>
+        /// Change user data
+        /// </summary>
+        /// <param name="user">Requst from admin to change user data</param>
+        /// <returns>ActionResult</returns>
         [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -97,10 +136,46 @@ namespace Blog.WEB.Controllers
 
             if (isAdmin)
             {
-                var result = UserService.UpdateUserData(user);
+                OperationDetails operationDetails = await UserService.UpdateUserData(user);
                 var updatedUser = await UserService.GetUserAsync(user.Id);
+                if(operationDetails.Succedeed)
+                {
+                    return View(updatedUser);
+                }
+                else
+                {
+                    ModelState.AddModelError(operationDetails.Property, operationDetails.Message);
+                } 
+            }
 
-                return View(updatedUser);
+            return View();
+        }
+
+        /// <summary>
+        /// Delete user
+        /// </summary>
+        /// <param name="Id">User identifier</param>
+        /// <returns>Action result</returns>
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        public async Task<ActionResult> Delete(string Id)
+        {
+            bool isAdmin = User.IsInRole("admin");
+
+            if (isAdmin)
+            {
+                OperationDetails operationDetails = await UserService.DeleteUser(Id);
+
+                if (operationDetails.Succedeed)
+                {
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return HttpNotFound();
+                }
+
+                return RedirectToAction("Index");
             }
 
             return View();

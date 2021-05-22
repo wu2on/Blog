@@ -1,16 +1,25 @@
-﻿using Blog.DAL.EF;
-using Blog.DAL.Interfaces.Entities;
-using Blog.DAL.Interfaces.Repositories;
-
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 
+using Blog.DAL.EF;
+using Blog.DAL.Interfaces.Entities;
+using Blog.DAL.Interfaces.Repositories;
+
 namespace Blog.DAL.Repositories
 {
+    /// <summary>
+    /// Base Generic Repository
+    /// </summary>
+    /// <typeparam name="TEntity">
+    /// Create DbSet<TEntity/> that you will work with
+    /// </typeparam>
+    /// <typeparam name="TKey">
+    /// Type of Id of your Entity that inherits from IEntity
+    /// </typeparam>
     public class Repository<TEntity, TKey> : IRepository<TEntity, TKey> where TEntity : class, IEntity<TKey>
     {
         protected readonly BlogContext Context;

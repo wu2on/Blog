@@ -1,27 +1,47 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Web.Mvc;
+
 using Blog.BLL.Dto;
 using Blog.BLL.Interfaces;
 using Blog.WEB.Models;
-using System;
-using System.Collections.Generic;
-using System.Web.Mvc;
+using AutoMapper;
 
 
 namespace Blog.WEB.Controllers
 {
+    /// <summary>
+    /// Controller to search blogs by tag or text
+    /// </summary>
     public class SearchController : Controller
     {
+        /// <summary>
+        /// The Blog Service service
+        /// </summary>
         private IBlogService BlogService;
 
+        /// <summary>
+        /// Initializes a new instance of the SearchController
+        /// </summary>
+        /// <param name="service">Blog service</param>
         public SearchController(IBlogService service)
         {
             BlogService = service;
         }
+
+        /// <summary>
+        /// Show search view
+        /// </summary>
+        /// <returns>Action reslut</returns>
         public ActionResult Index()
         {
             return View();
         }
 
+        /// <summary>
+        /// Search blogs by tag or text
+        /// </summary>
+        /// <param name="model">Request from user to search blogs</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Result(SearchModel model)
         {

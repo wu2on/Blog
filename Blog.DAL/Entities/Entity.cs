@@ -1,5 +1,6 @@
-﻿using Blog.DAL.Interfaces.Entities;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+
+using Blog.DAL.Interfaces.Entities;
 
 namespace Blog.DAL.Entities
 {

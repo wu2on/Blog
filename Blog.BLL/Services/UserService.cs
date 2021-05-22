@@ -1,15 +1,16 @@
-﻿using Blog.BLL.Dto;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Linq;
+using System.Security.Claims;
+
+using Blog.BLL.Dto;
 using Blog.DAL.Entities;
 using Blog.DAL.Interfaces;
 using Blog.BLL.Infrastructure;
 using Blog.BLL.Interfaces;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Linq;
-using System.Security.Claims;
+
 using Microsoft.AspNet.Identity;
 using AutoMapper;
-using System;
 
 namespace Blog.BLL.Services
 {
@@ -69,7 +70,21 @@ namespace Blog.BLL.Services
                 return new OperationDetails(true, "Profile has been successfully updated", "");
             }
 
-            return new OperationDetails(false, "Profile hasn't been updated", "profile");
+            return new OperationDetails(false, "Profile hasn't been updated", "profile edit");
+        }
+
+        public async Task<OperationDetails> DeleteUser(string Id)
+        {
+            if(Id != null)
+            {
+                UserProfile user = _uow.UserProfileRepository.GetFirstOrDefault(x => x.Id == Id);
+                user.IsDeleted = true;
+                _uow.UserProfileRepository.Update(user);
+                await _uow.SaveAsync();
+                return new OperationDetails(true, "Account has been deleted", "");
+            }
+
+            return new OperationDetails(false, "Account hasn't been deleted", "Delete profile");
         }
 
         public async Task<ClaimsIdentity> Authenticate(UserDto userDto)

@@ -1,12 +1,13 @@
-﻿using Blog.DAL.EF;
-using Blog.DAL.Entities;
-using Blog.DAL.Interfaces;
-using Microsoft.AspNet.Identity.EntityFramework;
-using System;
+﻿using System;
 using System.Threading.Tasks;
-using Blog.DAL.Identity;
 using System.Diagnostics;
+
+using Blog.DAL.EF;
+using Blog.DAL.Entities;
+using Blog.DAL.Identity;
+using Blog.DAL.Interfaces;
 using Blog.DAL.Interfaces.Repositories;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Blog.DAL.Repositories
 {

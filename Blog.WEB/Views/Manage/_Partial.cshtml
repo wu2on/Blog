@@ -18,31 +18,38 @@
                 Last Name
             </th>
             <th class="control-label">
-               Role
+                Is Deleted
+            </th>
+            <th class="control-label">
+                Role
             </th>
             <th></th>
         </tr>
 
         @foreach (var item in Model)
         {
-            <tr>
-                <td class="form-control">
-                    @Html.DisplayFor(modelItem => item.Email)
-                </td>
-                <td class="custom-cyber">
-                    @Html.DisplayFor(modelItem => item.FirstName)
-                </td>
-                <td class="custom-cyber">
-                    @Html.DisplayFor(modelItem => item.LastName)
-                </td>
-                <td class="form-control">
-                    @Html.DisplayFor(modelItem => item.Role)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "ChangeUser", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-                </td>
-            </tr>
+    <tr>
+        <td class="form-control">
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td class="custom-cyber">
+            @Html.DisplayFor(modelItem => item.FirstName)
+        </td>
+        <td class="custom-cyber">
+            @Html.DisplayFor(modelItem => item.LastName)
+        </td>
+        <td class="custom-cyber">@item.IsDeleted</td>
+        <td class="form-control">
+            @Html.DisplayFor(modelItem => item.Role)
+        </td>
+        <td class="padding-top">
+            @Html.ActionLink("Edit", "ChangeUser", new { id = item.Id }) |
+            @using (Html.BeginForm("Delete", "Manage", FormMethod.Post, new { @class = "btn-delete" }))
+            {
+                <button type="submit" name="Id" value="@item.Id" class="btn btn-danger">Delete</button>
+            }
+        </td>
+    </tr>
         }
     </table>
 }

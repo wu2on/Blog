@@ -1,5 +1,6 @@
-﻿using Blog.BLL.Dto;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+
+using Blog.BLL.Dto;
 
 namespace Blog.WEB.Models
 {

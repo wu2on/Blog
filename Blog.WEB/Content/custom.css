@@ -167,3 +167,11 @@ td {
     border-top: 0px !important;
 
 }
+
+.btn-delete {
+    display: inline-block;
+}
+
+.padding-top {
+    padding-top: 0px !important;
+}

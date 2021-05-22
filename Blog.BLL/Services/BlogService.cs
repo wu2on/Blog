@@ -1,14 +1,14 @@
-﻿using AutoMapper;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+
 using Blog.BLL.Dto;
 using Blog.BLL.Infrastructure;
 using Blog.BLL.Interfaces;
 using Blog.DAL.Entities;
 using Blog.DAL.Interfaces;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using AutoMapper;
 
 namespace Blog.BLL.Services
 {
